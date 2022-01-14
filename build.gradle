@@ -5,8 +5,15 @@ plugins {
 group = 'dev.rachamon'
 version = '0.0.1-SNAPSHOT'
 
+//repositories {
+//    maven {
+//        url "./libs/PlaceholderAPI-4.5.1"
+//    }
+//}
+
 dependencies {
     compileOnly 'org.spongepowered:spongeapi:7.4.0'
+    compile files('./libs/PlaceholderAPI-4.5.1.jar')
     annotationProcessor 'org.spongepowered:spongeapi:7.4.0'
 }
 
