@@ -2,17 +2,20 @@ package dev.rachamon.rachamonguilds;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import dev.rachamon.rachamonguilds.api.services.CommandService;
+import dev.rachamon.rachamonguilds.api.services.GuildService;
 import dev.rachamon.rachamonguilds.configs.RachamonGuildsConfig;
-import dev.rachamon.rachamonguilds.facades.GuildFacade;
-import dev.rachamon.rachamonguilds.facades.GuildMessagingFacade;
-import dev.rachamon.rachamonguilds.managers.RachamonGuildsPluginManager;
-import dev.rachamon.rachamonguilds.services.GuildService;
+import dev.rachamon.rachamonguilds.managers.guild.GuildManager;
+import dev.rachamon.rachamonguilds.managers.guild.GuildMessagingManager;
+import dev.rachamon.rachamonguilds.managers.plugin.GuildPluginManager;
 import dev.rachamon.rachamonguilds.utils.LoggerUtil;
+import dev.rachamon.rachamonguilds.utils.RachamonGuildsHelperUtil;
 import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
+import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
@@ -35,11 +38,12 @@ public class RachamonGuilds {
     private static RachamonGuilds instance;
     private static boolean isInitialized = false;
 
-    private RachamonGuildsPluginManager rachamonGuildsPluginManager;
+    private GuildPluginManager rachamonGuildsPluginManager;
     private Components components;
     private RachamonGuildsConfig config;
-
     private LoggerUtil logger;
+    private RachamonGuildsHelperUtil helperUtil;
+
     @Inject
     private PluginContainer container;
 
@@ -48,7 +52,7 @@ public class RachamonGuilds {
     private Path directory;
 
     @Inject
-    public GuiceObjectMapperFactory factory;
+    private GuiceObjectMapperFactory factory;
 
     @Inject
     private Injector guildInjector;
@@ -59,8 +63,8 @@ public class RachamonGuilds {
     @Listener
     public void onPreInitialize(GamePreInitializationEvent event) {
         instance = this;
-        this.logger = new LoggerUtil(Sponge.getServer());
-        this.rachamonGuildsPluginManager = new RachamonGuildsPluginManager();
+        this.setLogger(new LoggerUtil(Sponge.getServer()));
+        this.rachamonGuildsPluginManager = new GuildPluginManager();
 
         this.getPluginManager().preInitialize();
         this.getLogger().info("On Pre Initialize RachamonGuilds...");
@@ -85,8 +89,10 @@ public class RachamonGuilds {
         getInstance().getPluginManager().postInitialize();
     }
 
-    public void reload() throws IOException {
-        this.config = new RachamonGuildsConfig(this.factory);
+    @Listener
+    public void onReload(GameReloadEvent event) throws IOException {
+        getInstance().getLogger().info("On Plugin Reload");
+        getInstance().getPluginManager().reload();
     }
 
     public static RachamonGuilds getInstance() {
@@ -105,12 +111,28 @@ public class RachamonGuilds {
         return isInitialized;
     }
 
-    public RachamonGuildsPluginManager getPluginManager() {
+    public GuildPluginManager getPluginManager() {
         return this.rachamonGuildsPluginManager;
     }
 
     public GuiceObjectMapperFactory getFactory() {
         return this.factory;
+    }
+
+    public PluginContainer getContainer() {
+        return this.container;
+    }
+
+    public GuildManager getGuildManager() {
+        return this.getComponents().guildManager;
+    }
+
+    public Injector getGuildInjector() {
+        return this.guildInjector;
+    }
+
+    public Injector getSpongeInjector() {
+        return this.spongeInjector;
     }
 
     public void setIsInitialized(boolean isInit) {
@@ -129,28 +151,8 @@ public class RachamonGuilds {
         this.logger = logger;
     }
 
-    public PluginContainer getContainer() {
-        return this.container;
-    }
-
-    public GuildFacade getGuildFacade() {
-        return this.getComponents().guildFacade;
-    }
-
-    public Injector getGuildInjector() {
-        return this.guildInjector;
-    }
-
-    public Injector getSpongeInjector() {
-        return this.spongeInjector;
-    }
-
     public void setGuildInjector(Injector injector) {
         this.guildInjector = injector;
-    }
-
-    public void setSpongeInjector(Injector injector) {
-        this.spongeInjector = injector;
     }
 
     public RachamonGuildsConfig getConfig() {
@@ -161,7 +163,7 @@ public class RachamonGuilds {
         return this.getComponents().guildService;
     }
 
-    public GuildMessagingFacade getGuildMessagingFacade() {
+    public GuildMessagingManager getGuildMessagingManager() {
         return this.getComponents().guildMessagingFacade;
     }
 
@@ -169,12 +171,24 @@ public class RachamonGuilds {
         return this.components;
     }
 
+    public CommandService getCommandService() {
+        return CommandService.getInstance();
+    }
+
+    public RachamonGuildsHelperUtil getHelperUtil() {
+        return helperUtil;
+    }
+
+    public void setHelperUtil(RachamonGuildsHelperUtil helperUtil) {
+        this.helperUtil = helperUtil;
+    }
+
     public static class Components {
         @Inject
-        private GuildFacade guildFacade;
+        private GuildManager guildManager;
 
         @Inject
-        private GuildMessagingFacade guildMessagingFacade;
+        private GuildMessagingManager guildMessagingFacade;
 
         @Inject
         private GuildService guildService;

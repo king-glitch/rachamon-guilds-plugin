@@ -16,38 +16,43 @@ import java.util.Arrays;
 
 public class RachamonGuildsConfig {
     private final RachamonGuilds plugin = RachamonGuilds.getInstance();
-    private final File mainConfig = new File(this.plugin.getDirectory().toFile(), "main.conf");
     private CommentedConfigurationNode configRoot;
+    private CommentedConfigurationNode languageRoot;
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
+    private ConfigurationLoader<CommentedConfigurationNode> languageLoader;
     private MainConfig root;
+    private LanguageConfig language;
 
     public RachamonGuildsConfig(GuiceObjectMapperFactory factory) throws IOException {
         this.plugin.getLogger().info("Loading configuration -> config module");
         try {
             Files.createDirectories(plugin.getDirectory().toFile().toPath());
+            File mainConfig = new File(this.plugin.getDirectory().toFile(), "main.conf");
+            File languageConfig = new File(this.plugin.getDirectory().toFile(), "language.conf");
             if (!mainConfig.exists()) {
                 this.plugin.getLogger().info("Creating Main Configuration...");
                 mainConfig.createNewFile();
             }
 
+            if (!languageConfig.exists()) {
+                this.plugin.getLogger().info("Creating Language Configuration...");
+                languageConfig.createNewFile();
+            }
+
             String header = ""
-                    + "Test Header"
+                    + "Rachamon Guild Plugin Made by ITSAMEWILLIAM#6507 "
                     + "";
 
             configLoader = HoconConfigurationLoader.builder().setFile(mainConfig).build();
             configRoot = configLoader.load(ConfigurationOptions.defaults().setHeader(header));
             root = configRoot.getValue(TypeToken.of(MainConfig.class), new MainConfig());
 
-            double update = 0;
+            languageLoader = HoconConfigurationLoader.builder().setFile(languageConfig).build();
+            languageRoot = languageLoader.load(ConfigurationOptions.defaults().setHeader(header));
+            language = languageRoot.getValue(TypeToken.of(LanguageConfig.class), new LanguageConfig());
 
-            if (configRoot.getNode("config-version").getDouble() < 1.2D) {
-                configRoot.getNode("config-version").setValue(1.2D);
-                update = 1.2D;
-            }
-
-            if (update > 0) {
-                this.plugin.getLogger().success("Configuration updated to " + update);
-            }
+            this.save();
+            plugin.getLogger().success("All configurations loaded!");
 
         } catch (ObjectMappingException e) {
             this.plugin.getLogger().error(Arrays.toString(e.getStackTrace()));
@@ -61,9 +66,15 @@ public class RachamonGuildsConfig {
     public void save() {
         try {
             configRoot.setValue(TypeToken.of(MainConfig.class), root);
+            languageRoot.setValue(TypeToken.of(LanguageConfig.class), language);
             this.configLoader.save(configRoot);
+            this.languageLoader.save(languageRoot);
         } catch (IOException | ObjectMappingException e) {
             this.plugin.getLogger().error(Arrays.toString(e.getStackTrace()));
         }
+    }
+
+    public LanguageConfig getLanguage() {
+        return language;
     }
 }
