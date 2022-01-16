@@ -195,6 +195,10 @@ public class GuildManager {
             throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getTargetIsNotInGuild().replaceAll("\\{target}", target.getName()));
         }
 
+        if (!this.isPlayerGuildMaster(source, guild)) {
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster());
+        }
+
         this.guildService.setGuildMaster(guild, target.getUniqueId());
         plugin.getGuildMessagingManager().sendGuildInfo(guild, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getNewGuildMaster().replaceAll("\\{new}", target.getName()).replaceAll("\\{old}", source.getName())));
         plugin.getGuildMessagingManager().response(source, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandTransferSuccess().replaceAll("\\{target}", target.getName())));
@@ -269,13 +273,13 @@ public class GuildManager {
     public void invite(Guild guild, Player master, Player source) {
         LanguageConfig language = plugin.getConfig().getLanguage();
         ChatQuestion question = ChatQuestion.of(RachamonGuildsUtil.toText(language.getGeneralCategory().getInvitePlayerToGuild().replaceAll("\\{guild-master}", master.getName()).replaceAll("\\{guild-name}", guild.getName()))).addAnswer(ChatQuestionAnswer.of(RachamonGuildsUtil.toText(language.getQuestionCategory().getAcceptButton()), target -> {
-            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteAccepted().replace("\\{target}", source.getName())));
-            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteAcceptedTarget().replace("\\{guild-name}", guild.getName())));
+            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteAccepted().replaceAll("\\{target}", source.getName())));
+            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteAcceptedTarget().replaceAll("\\{guild-name}", guild.getName())));
             this.guildService.addMember(guild, new GuildMember(source.getUniqueId(), new Date(), new Date()));
             plugin.getGuildMessagingManager().sendJoinGuildMessage(guild, source);
         })).addAnswer(ChatQuestionAnswer.of(RachamonGuildsUtil.toText(language.getQuestionCategory().getDeclinedButton()), target -> {
-            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteDeclined().replace("\\{target}", source.getName())));
-            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteDeclinedTarget().replace("\\{guild-name}", guild.getName())));
+            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteDeclined().replaceAll("\\{target}", source.getName())));
+            plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteDeclinedTarget().replaceAll("\\{guild-name}", guild.getName())));
         })).build();
 
         question.setAlreadyResponse(RachamonGuildsUtil.toText(language.getQuestionCategory().getAlreadyResponded()));
