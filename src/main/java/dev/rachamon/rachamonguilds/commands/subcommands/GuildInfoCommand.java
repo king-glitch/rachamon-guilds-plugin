@@ -5,7 +5,6 @@ import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.interfaces.command.*;
 import dev.rachamon.rachamonguilds.commands.elements.GuildCommandElement;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -21,9 +20,7 @@ import java.util.Optional;
 public class GuildInfoCommand implements IPlayerCommand, IParameterizedCommand {
     @Override
     public CommandElement[] getArguments() {
-        return new CommandElement[]{
-                new GuildCommandElement(Text.of("guild"))
-        };
+        return new CommandElement[]{new GuildCommandElement(Text.of("guild"))};
     }
 
     @Nonnull

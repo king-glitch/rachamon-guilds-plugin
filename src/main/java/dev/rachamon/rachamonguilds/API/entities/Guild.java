@@ -1,5 +1,6 @@
 package dev.rachamon.rachamonguilds.api.entities;
 
+import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.identifiable.ISpongeIdentifiable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -29,6 +30,9 @@ public class Guild implements ISpongeIdentifiable {
 
     @Setting(value = "creation-date")
     private Date creationDate;
+
+    @Setting(value = "home")
+    private String home;
 
     public Guild(UUID leader, String name, String displayName, Date creationDate, Set<GuildMember> members) {
         this.uuid = leader;
@@ -82,16 +86,24 @@ public class Guild implements ISpongeIdentifiable {
         return members;
     }
 
+    public List<UUID> getMembersUuid() {
+        return members.stream().map(GuildMember::getUuid).collect(Collectors.toList());
+    }
+
     public void addMember(GuildMember member) {
         this.members.add(member);
     }
 
-    public void removeMember(GuildMember member) {
-        this.members.remove(member);
+    public void removeMember(UUID uuid) {
+        RachamonGuilds.getInstance().getLogger().debug(this.members.toString());
+        this.setMembers(this.members.stream()
+                .filter(member -> !member.getUuid().equals(uuid))
+                .collect(Collectors.toSet()));
+        RachamonGuilds.getInstance().getLogger().debug(this.members.toString());
     }
 
     public boolean hasMember(UUID uuid) {
-        Optional<GuildMember> member = this.members.stream().filter(_member -> _member.getUuid().equals(uuid)).findFirst();
+        Optional<GuildMember> member = this.members.stream().filter(m -> m.getUuid().equals(uuid)).findFirst();
         return member.isPresent();
     }
 
@@ -126,5 +138,13 @@ public class Guild implements ISpongeIdentifiable {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
     }
 }

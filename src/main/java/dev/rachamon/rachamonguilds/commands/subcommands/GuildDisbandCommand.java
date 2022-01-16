@@ -1,9 +1,8 @@
 package dev.rachamon.rachamonguilds.commands.subcommands;
 
-
 import dev.rachamon.rachamonguilds.RachamonGuilds;
+import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.interfaces.command.*;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -11,11 +10,10 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
-@ICommandAliases({"list", "ls"})
-@ICommandPermission("rachamonguilds.command.guild.list")
-@ICommandDescription("Guild Lists")
-public class GuildListCommand implements IPlayerCommand, IParameterizedCommand {
-
+@ICommandAliases({"disband"})
+@ICommandPermission("rachamonguilds.command.guild.disband")
+@ICommandDescription("Disband a guild.")
+public class GuildDisbandCommand implements IPlayerCommand, IParameterizedCommand {
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{};
@@ -23,10 +21,9 @@ public class GuildListCommand implements IPlayerCommand, IParameterizedCommand {
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException {
 
-        // create guild
-        RachamonGuilds.getInstance().getGuildManager().printGuildList(source);
+        RachamonGuilds.getInstance().getGuildManager().disband(source);
 
         return CommandResult.success();
     }

@@ -26,13 +26,7 @@ import org.spongepowered.api.plugin.PluginContainer;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Plugin(
-        id = "rachamonguilds",
-        name = "RachamonGuilds",
-        description = "A simple guild plugin",
-        authors = {"Rachamon"},
-        dependencies = {@Dependency(id = "placeholderapi", optional = true)}
-)
+@Plugin(id = "rachamonguilds", name = "RachamonGuilds", description = "A simple guild plugin", authors = {"Rachamon"}, dependencies = {@Dependency(id = "placeholderapi", optional = true)})
 public class RachamonGuilds {
 
     private static RachamonGuilds instance;

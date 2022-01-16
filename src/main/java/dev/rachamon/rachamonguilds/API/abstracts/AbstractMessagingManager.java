@@ -15,7 +15,7 @@ public class AbstractMessagingManager {
                     .getInstance()
                     .getConfig()
                     .getLanguage()
-                    .getGeneralCategorySetting()
+                    .getGeneralCategory()
                     .getPrefix() + "&a");
         }
 
@@ -28,7 +28,7 @@ public class AbstractMessagingManager {
                     .getInstance()
                     .getConfig()
                     .getLanguage()
-                    .getGeneralCategorySetting()
+                    .getGeneralCategory()
                     .getPrefix() + "&c");
         }
         return Text.of(prefix, Text.of(messages));

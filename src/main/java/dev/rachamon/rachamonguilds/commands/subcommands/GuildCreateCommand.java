@@ -7,7 +7,6 @@ import dev.rachamon.rachamonguilds.api.interfaces.command.*;
 import dev.rachamon.rachamonguilds.configs.LanguageConfig;
 import dev.rachamon.rachamonguilds.configs.MainConfig;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -16,6 +15,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import javax.annotation.Nonnull;
+import java.util.regex.Pattern;
 
 @ICommandAliases({"create"})
 @ICommandPermission("rachamonguilds.command.guild.create")
@@ -42,37 +42,32 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
         int minNameLength = config.getGuildCategorySetting().getMinGuildNameLength();
         int maxNameLength = config.getGuildCategorySetting().getMaxGuildNameLength();
 
-        boolean isGuildDisplayNameIncludeColor = config.getGuildCategorySetting().isGuildDisplayNameIncludeColor();
-        int minDisplayNameLength = config.getGuildCategorySetting().getMinGuildDisplayNameLength();
-        int maxDisplayNameLength = config.getGuildCategorySetting().getMaxGuildDisplayNameLength();
-        int displayNameLength = 0;
-
         if (name.length() < minNameLength) {
-            throw new GuildCommandException(language.getCommandCategorySetting().getCommandCreatedNameTooLong());
+            throw new GuildCommandException(language.getCommandCategory().getCommandCreatedNameTooShort());
         }
 
         if (name.length() > maxNameLength) {
-            throw new GuildCommandException(language.getCommandCategorySetting().getCommandCreatedNameTooLong());
+            throw new GuildCommandException(language.getCommandCategory().getCommandCreatedNameTooLong());
         }
 
-        if (!isGuildDisplayNameIncludeColor) {
-            displayNameLength = displayName.length() - (displayName.replace("&", "").length() * 2);
-        } else {
-            displayNameLength = displayName.length();
+        if (!name.matches(config.getGuildCategorySetting().getValidNameRegex())) {
+            throw new GuildCommandException(language.getCommandCategory().getCommandInvalidGuildName());
         }
 
-        if (displayNameLength < minDisplayNameLength) {
-            throw new GuildCommandException(language.getCommandCategorySetting().getCommandCreatedDisplayNameTooShort());
-        }
 
-        if (displayNameLength > maxDisplayNameLength) {
-            throw new GuildCommandException(language.getCommandCategorySetting().getCommandCreatedDisplayNameTooLong());
-        }
+        boolean isGuildDisplayNameIncludeColor = config.getGuildCategorySetting().isGuildDisplayNameIncludeColor();
+        int minDisplayNameLength = config.getGuildCategorySetting().getMinGuildDisplayNameLength();
+        int maxDisplayNameLength = config.getGuildCategorySetting().getMaxGuildDisplayNameLength();
 
+
+        RachamonGuildsUtil.guildDisplayNameCheck(displayName, language, isGuildDisplayNameIncludeColor, minDisplayNameLength, maxDisplayNameLength);
+        if (!displayName.matches("[A-Za-z&0-9]*")) {
+            throw new GuildCommandException(language.getCommandCategory().getCommandInvalidGuildDisplayName());
+        }
         // create guild
         RachamonGuilds
                 .getInstance()
-                .getGuildManager().createGuild(
+                .getGuildManager().create(
                         source,
                         name,
                         displayName
@@ -80,4 +75,6 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
 
         return CommandResult.success();
     }
+
+
 }

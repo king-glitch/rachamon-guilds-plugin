@@ -1,27 +1,36 @@
 package dev.rachamon.rachamonguilds.api.exceptions;
 
 import dev.rachamon.rachamonguilds.RachamonGuilds;
+import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.User;
 
 public class GuildCommandException extends CommandException {
 
-    private final RachamonGuilds plugin = RachamonGuilds.getInstance();
+    private static final RachamonGuilds plugin = RachamonGuilds.getInstance();
 
     public GuildCommandException(Object... message) {
-        super(RachamonGuilds.getInstance().getGuildMessagingManager().formatError(message));
+        super(plugin.getGuildMessagingManager().formatError(message));
     }
 
     public static GuildCommandException notInGuild() {
-        return new GuildCommandException("You are not in a club.");
+        return new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotInGuild()));
     }
 
     public static GuildCommandException notGuildMaster() {
-        return new GuildCommandException("You are not the club leader.");
+        return new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster()));
     }
 
     public static GuildCommandException targetNotInGuild(User player) {
-        return new GuildCommandException(player.getName(), " is not in your club.");
+        return new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getTargetIsNotInGuild().replaceAll("\\{target}", player.getName())));
+    }
+
+    public static GuildCommandException notOnlineOrExists() {
+        return new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotFound()));
+    }
+
+    public static GuildCommandException somethingWentWrong() {
+        return new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getSomethingWentWrong()));
     }
 
 

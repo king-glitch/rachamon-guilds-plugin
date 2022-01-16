@@ -71,6 +71,12 @@ public class GuildDatabaseManager {
         }
     }
 
+    public static boolean delete(UUID uuid) {
+        Path path = guildsDirectory.resolve(uuid + ".json");
+        RachamonGuilds.getInstance().getLogger().debug("&cDeleting guild " + uuid + " from the database.");
+        return path.toFile().delete();
+    }
+
     public static void save(Guild guild) {
         Gson gson = new Gson();
         Path path = storageDirectory.resolve(guild.getId() + ".json");

@@ -17,6 +17,9 @@ public class MainConfig {
         @Setting(comment = "Send message to all online players on guild created? [default: true]", value = "is-send-global-message-on-guild-created")
         private final boolean isSendGlobalMessageOnGuildCreated = true;
 
+        @Setting(comment = "Send message to all online players when guild disbanded? [default: true]", value = "is-send-global-message-on-guild-created")
+        private final boolean isSendGlobalMessageOnGuildDisbanded = true;
+
         @Setting(comment = "show debug messages [default: false]", value = "debug")
         private final boolean isDebug = false;
 
@@ -27,24 +30,28 @@ public class MainConfig {
         public boolean isDebug() {
             return isDebug;
         }
+
+        public boolean isSendGlobalMessageOnGuildDisbanded() {
+            return isSendGlobalMessageOnGuildDisbanded;
+        }
     }
 
     @ConfigSerializable
     public static class GuildCategorySetting {
 
-        @Setting(comment = "A regex valid guild name", value = "valid-name-regex")
-        private final String validNameRegex = "[a-zA-Z]";
+        @Setting(comment = "A regex valid guild name [default: [a-zA-Z]]", value = "valid-name-regex")
+        private final String validNameRegex = "[a-zA-Z]*";
 
-        @Setting(comment = "Min guild name length", value = "min-guild-name-length")
+        @Setting(comment = "Min guild name length [default: 4]", value = "min-guild-name-length")
         private final int minGuildNameLength = 4;
 
-        @Setting(comment = "Max guild name length", value = "max-guild-name-length")
+        @Setting(comment = "Max guild name length [default: 16]", value = "max-guild-name-length")
         private final int maxGuildNameLength = 16;
 
-        @Setting(comment = "Min guild displayname length", value = "min-guild-displayname-length")
+        @Setting(comment = "Min guild displayname length [default: 4]", value = "min-guild-displayname-length")
         private final int minGuildDisplayNameLength = 4;
 
-        @Setting(comment = "Max guild displayname length", value = "max-guild-displayname-length")
+        @Setting(comment = "Max guild displayname length [default: 16]", value = "max-guild-displayname-length")
         private final int maxGuildDisplayNameLength = 16;
 
         @Setting(comment = "Max Guild displayname includes color? [default: true]", value = "guild-displayname-include-color")
