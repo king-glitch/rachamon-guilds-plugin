@@ -9,12 +9,10 @@ import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.services.GuildService;
 import dev.rachamon.rachamonguilds.api.utils.ChatQuestion;
 import dev.rachamon.rachamonguilds.api.utils.ChatQuestionAnswer;
-import dev.rachamon.rachamonguilds.commands.subcommands.GuildCreateCommand;
 import dev.rachamon.rachamonguilds.configs.LanguageConfig;
 import dev.rachamon.rachamonguilds.configs.MainConfig;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.pagination.PaginationList;
@@ -56,7 +54,11 @@ public class GuildManager {
 
     public void create(Player source, String name, String displayName) throws GuildCommandException {
         if (this.isPlayerInGuild(source)) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getUserAlreadyInGuild()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getUserAlreadyInGuild());
+        }
+
+        if (this.getGuilds().values().stream().anyMatch(g -> g.getName().equalsIgnoreCase(name))) {
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getGuildNameAlreadyExists());
         }
 
         Guild guild = this.guildService.addGuild(source, name, displayName, new Date());
@@ -131,12 +133,19 @@ public class GuildManager {
 
         List<Text> contents = new ArrayList<>();
 
-        contents.add(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandGuildInfoPrint().replaceAll("\\{guild-name}", guild.getName()).replaceAll("\\{guild-displayname}", guild.getDisplayName()).replaceAll("\\{guild-size}", String.valueOf(guild.getMembers().size())).replaceAll("\\{guild-creation-date}", guild.getCreationDate().toString()).replaceAll("\\{guild-master-status}", RachamonGuildsUtil.getPlayerFromUuid(guild.getMaster()).isPresent() ? "&a&lOnline&r" : "&c&lOffline&r").replaceAll("\\{guild-master}", RachamonGuildsUtil.getPlayerFromUuid(guild.getMaster()).get().getName())));
+        Optional<User> master = RachamonGuildsUtil.getUserFromUuid(guild.getMaster());
+        if (!master.isPresent()) return;
+
+        contents.add(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandGuildInfoPrint().replaceAll("\\{guild-name}", guild.getName()).replaceAll("\\{guild-displayname}", guild.getDisplayName()).replaceAll("\\{guild-size}", String.valueOf(guild.getMembers().size())).replaceAll("\\{guild-creation-date}", guild.getCreationDate().toString()).replaceAll("\\{guild-master-status}", master.get().isOnline() ? "&a&lOnline&r" : "&c&lOffline&r").replaceAll("\\{guild-master}", master.get().getName())));
 
         AtomicInteger i = new AtomicInteger(1);
-        this.getOnlineGuildMembers(guild).forEach((member) -> {
+        this.getGuildMembers(guild).forEach((member) -> {
+            Optional<User> user = RachamonGuildsUtil.getUserFromUuid(member.getUuid());
             Optional<Player> player = RachamonGuildsUtil.getPlayerFromUuid(member.getUuid());
-            String text = plugin.getConfig().getLanguage().getCommandCategory().getCommandInfoMemberListPrint().replaceAll("\\{index}", String.valueOf(i.get())).replaceAll("\\{first-join}", member.getFirstJoin().toString()).replaceAll("\\{name}", player.map(value -> this.isPlayerGuildMaster(value, guild) ? "&6&l" + value.getName() + "&r" : "&a" + value.getName()).orElseGet(() -> "&c" + player.get().getName()));
+            if (!user.isPresent() || !player.isPresent()) return;
+
+            String name = user.get().isOnline() ? this.isPlayerGuildMaster(player.get(), guild) ? "&6&l" + player.get().getName() + "&r" : "&a&l" + player.get().getName() + "&r" : "&c&l" + player.get().getName() + "&r";
+            String text = plugin.getConfig().getLanguage().getCommandCategory().getCommandInfoMemberListPrint().replaceAll("\\{index}", String.valueOf(i.get())).replaceAll("\\{first-join}", member.getFirstJoin().toString()).replaceAll("\\{name}", name);
 
             contents.add(RachamonGuildsUtil.toText(text));
             i.addAndGet(1);
@@ -152,7 +161,7 @@ public class GuildManager {
         if (user.isPresent()) {
             return user.get();
         } else {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotFound()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotFound());
         }
     }
 
@@ -165,7 +174,7 @@ public class GuildManager {
         if (guild.isPresent()) {
             return guild.get();
         } else {
-            throw new GuildCommandException(RachamonGuildsUtil.toText((plugin.getConfig().getLanguage().getGeneralCategory().getGuildNotFound())));
+            throw new GuildCommandException((plugin.getConfig().getLanguage().getGeneralCategory().getGuildNotFound()));
         }
     }
 
@@ -183,7 +192,7 @@ public class GuildManager {
         boolean isInGuild = this.isPlayerInGuild(guild, target);
 
         if (!isInGuild) {
-            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotInGuild());
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getTargetIsNotInGuild().replaceAll("\\{target}", target.getName()));
         }
 
         this.guildService.setGuildMaster(guild, target.getUniqueId());
@@ -214,7 +223,7 @@ public class GuildManager {
         boolean isInGuild = this.isPlayerInGuild(guild, target);
 
         if (!isInGuild) {
-            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotInGuild());
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getTargetIsNotInGuild().replaceAll("\\{target}", target.getName()));
         }
 
         if (target.getUniqueId().equals(source.getUniqueId())) {
@@ -231,6 +240,7 @@ public class GuildManager {
     public void removeGuildMember(Guild guild, Player target) {
         Optional<GuildMember> member = this.guildService.getGuildMember(guild, target.getUniqueId());
         if (!member.isPresent()) {
+            RachamonGuilds.getInstance().getLogger().debug("No Guild Member Data" + member);
             return;
         }
 
@@ -242,15 +252,15 @@ public class GuildManager {
         Player player = RachamonGuildsUtil.getPlayerFromUsernameOrThrow(name);
 
         if (guild.getMembersUuid().contains(player.getUniqueId())) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getMemberAlreadyInGuild()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getMemberAlreadyInGuild());
         }
 
         if (this.getPlayerGuild(player).isPresent()) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getMemberAlreadyInAnotherGuild()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getMemberAlreadyInAnotherGuild());
         }
 
         if (!guild.getMaster().equals(source.getUniqueId())) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster());
         }
 
         this.invite(guild, source, player);
@@ -282,7 +292,7 @@ public class GuildManager {
         Guild guild = this.getPlayerGuildOrThrow(source);
 
         if (!guild.getMaster().equals(source.getUniqueId())) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster());
         }
 
         this.guildService.setHome(guild, source.getWorld(), source.getLocation(), source.getHeadRotation());
@@ -300,7 +310,7 @@ public class GuildManager {
         }
 
         if (!guild.getMaster().equals(source.getUniqueId())) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster());
         }
 
         int minNameLength = config.getGuildCategorySetting().getMinGuildNameLength();
@@ -333,7 +343,7 @@ public class GuildManager {
         int maxDisplayNameLength = config.getGuildCategorySetting().getMaxGuildDisplayNameLength();
 
         if (!guild.getMaster().equals(source.getUniqueId())) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster());
         }
 
         RachamonGuildsUtil.guildDisplayNameCheck(name, language, isGuildDisplayNameIncludeColor, minDisplayNameLength, maxDisplayNameLength);
@@ -348,7 +358,7 @@ public class GuildManager {
         String[] location = guild.getHome().split(":");
 
         if (location.length != 5) {
-            throw new GuildCommandException(RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandHomeNotFound()));
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getCommandCategory().getCommandHomeNotFound());
         }
 
         Optional<World> world = Sponge.getServer().getWorld(location[0]);

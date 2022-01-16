@@ -15,18 +15,12 @@ import java.util.stream.Collectors;
 
 public final class GuildService {
     private Map<UUID, Guild> guilds = new HashMap<>();
-    private Map<UUID, GuildMember> members = new HashMap<>();
 
     public Guild addGuild(User master, String name, String displayName, Date creationDate, User... members) {
         Guild guild = new Guild(UUID.randomUUID(), name, displayName, creationDate, new HashSet<>());
         this.addMember(guild, new GuildMember(master.getUniqueId(), new Date(), new Date()));
         guild.setCreationDate(new Date());
         guild.setMaster(master.getUniqueId());
-
-        for (User member : members) {
-            this.addMember(guild, new GuildMember(member.getUniqueId(), new Date(), new Date()));
-        }
-
         this.guilds.put(guild.getId(), guild);
         RachamonGuilds.getInstance().getLogger().debug("Creating Guild " + guild.getName());
         this.save();
@@ -61,10 +55,6 @@ public final class GuildService {
 
     public Map<UUID, Guild> getGuilds() {
         return this.guilds;
-    }
-
-    public Map<UUID, GuildMember> getMembers() {
-        return this.members;
     }
 
     public void addMember(Guild guild, GuildMember member) {
@@ -109,8 +99,7 @@ public final class GuildService {
     }
 
     public Optional<GuildMember> getGuildMember(Guild guild, UUID uuid) {
-        guild.setMaster(uuid);
-        return this.getMembers().values().stream().filter(member -> member.getUuid().equals(uuid)).findFirst();
+        return guild.getMembers().stream().filter(member -> member.getUuid().equals(uuid)).findFirst();
     }
 
     public void save() {

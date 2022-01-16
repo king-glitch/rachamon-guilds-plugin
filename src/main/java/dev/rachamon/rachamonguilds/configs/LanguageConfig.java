@@ -33,6 +33,9 @@ public class LanguageConfig {
         @Setting(comment = "if user is already in a guild", value = "user-already-in-guild")
         private final String userAlreadyInGuild = "&cYou are already in a guild!";
 
+        @Setting(comment = "if guild name already exists", value = "guild-name-already-exist")
+        private final String guildNameAlreadyExists = "&cThis guild name already exists.";
+
         @Setting(comment = "if user is not in a guild", value = "user-not-in-guild")
         private final String userNotInGuild = "&cYou are not in a guild!";
 
@@ -52,7 +55,7 @@ public class LanguageConfig {
         private final String disbandIsSuccess = "&aYour guild has been disband successfully.";
 
         @Setting(comment = "message when player is not in your guild", value = "target-is-not-in-guild")
-        private final String targetIsNotInGuild = "&c&l{target}&c is not in you guild.";
+        private final String targetIsNotInGuild = "&c&l{target}&c is not in your guild.";
 
         @Setting(comment = "message when guild master has been transfer", value = "new-guild-master")
         private final String newGuildMaster = "&a&l{old}&7 has transfer guild master to &a&l{new}&a. &a&l{new}&7 is now a new guild master! please be respect";
@@ -163,6 +166,10 @@ public class LanguageConfig {
 
         public String getUserNotInGuild() {
             return userNotInGuild;
+        }
+
+        public String getGuildNameAlreadyExists() {
+            return guildNameAlreadyExists;
         }
     }
 

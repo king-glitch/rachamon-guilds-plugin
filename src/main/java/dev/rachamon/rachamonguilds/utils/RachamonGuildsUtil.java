@@ -5,6 +5,8 @@ import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.configs.LanguageConfig;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.entity.living.player.User;
+import org.spongepowered.api.service.user.UserStorageService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
@@ -24,6 +26,11 @@ public class RachamonGuildsUtil {
 
     public static Optional<Player> getPlayerFromUuid(UUID uuid) {
         return Sponge.getServer().getPlayer(uuid);
+    }
+
+    public static Optional<User> getUserFromUuid(UUID uuid) {
+        Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
+        return userStorage.flatMap(storage -> storage.get(uuid));
     }
 
     public static Player getPlayerFromUuidOrThrow(UUID uuid) throws GuildCommandException {
