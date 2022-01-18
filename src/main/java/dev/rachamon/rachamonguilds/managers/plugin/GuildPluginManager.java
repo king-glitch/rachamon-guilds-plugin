@@ -4,7 +4,6 @@ import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.RachamonGuildsModule;
 import dev.rachamon.rachamonguilds.api.events.RachamonGuildsReloadEvent;
 import dev.rachamon.rachamonguilds.api.exceptions.AnnotatedCommandException;
-import dev.rachamon.rachamonguilds.api.services.CommandService;
 import dev.rachamon.rachamonguilds.commands.GuildCommand;
 import dev.rachamon.rachamonguilds.configs.RachamonGuildsConfig;
 import dev.rachamon.rachamonguilds.database.GuildDatabase;
@@ -56,7 +55,15 @@ public class GuildPluginManager {
 
         this.plugin.getLogger().debug("Reloading Rachamon Guilds...");
         this.plugin.setConfig(new RachamonGuildsConfig(this.plugin.getFactory()));
+
+        try {
+            this.plugin.getCommandService().register(new GuildCommand(), this.plugin);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         Sponge.getEventManager().post(new RachamonGuildsReloadEvent());
+
         this.plugin.getLogger().debug("Rachamon Guilds reloaded");
 
     }

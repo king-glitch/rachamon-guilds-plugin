@@ -374,4 +374,30 @@ public class GuildManager {
 
     }
 
+    public void guildChat(Player source, String message) throws GuildCommandException {
+        Guild guild = this.getPlayerGuildOrThrow(source);
+
+        RachamonGuilds.getInstance()
+                .getGuildMessagingManager()
+                .sendGuildInfo(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance()
+                        .getConfig()
+                        .getLanguage()
+                        .getGeneralCategory()
+                        .getGuildChatFormat()
+                        .replaceAll("\\{member}", source.getName()) + message)
+                );
+
+        Sponge.getServer().getOnlinePlayers()
+                .stream()
+                .filter(player -> player.hasPermission("rachamonguilds.chat.spy") && !guild.hasMember(player.getUniqueId()))
+                .forEach(player -> player.sendMessage(RachamonGuildsUtil.toText(RachamonGuilds.getInstance()
+                        .getConfig()
+                        .getLanguage()
+                        .getGeneralCategory()
+                        .getGuildChatFormat()
+                        .replaceAll("\\{member}", source.getName()) + message)
+                ));
+
+    }
+
 }

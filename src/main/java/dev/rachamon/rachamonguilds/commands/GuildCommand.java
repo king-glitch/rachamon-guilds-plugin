@@ -4,6 +4,7 @@ import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.interfaces.command.*;
 import dev.rachamon.rachamonguilds.commands.subcommands.*;
+import dev.rachamon.rachamonguilds.commands.subcommands.admin.GuildAdminReloadCommand;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -11,7 +12,7 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
-@ICommandChildren({GuildCreateCommand.class, GuildListCommand.class, GuildInfoCommand.class, GuildDisbandCommand.class, GuildTransferMasterCommand.class, GuildLeaveCommand.class, GuildKickCommand.class, GuildHomeCommand.class, GuildSetHomeCommand.class, GuildInviteCommand.class, GuildPrefixCommand.class, GuildNameCommand.class})
+@ICommandChildren({GuildCreateCommand.class, GuildAdminReloadCommand.class, GuildListCommand.class, GuildChatCommand.class, GuildInfoCommand.class, GuildDisbandCommand.class, GuildTransferMasterCommand.class, GuildLeaveCommand.class, GuildKickCommand.class, GuildHomeCommand.class, GuildSetHomeCommand.class, GuildInviteCommand.class, GuildPrefixCommand.class, GuildNameCommand.class})
 @ICommandAliases("guilds")
 @ICommandHelpText(title = "Main Guild Help", command = "help")
 @ICommandPermission("rachamonguilds.command.base")

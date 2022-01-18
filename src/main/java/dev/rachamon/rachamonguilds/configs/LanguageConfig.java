@@ -84,6 +84,15 @@ public class LanguageConfig {
         @Setting(comment = "message when player leave the guild" + "variable:\n" + " - {target}: the target", value = "invited-player-to-guild")
         private final String invitedPlayerToGuild = "&a&l{target}&7 has been invited to the guild.";
 
+        @Setting(comment = "guild chat format" + "variable:\n" + " - {member}: member", value = "guild-chat-format")
+        private final String guildChatFormat = "&8[&c{member}&8] &6∴&7 ";
+
+        @Setting(comment = "guild chat spy format" + "variable:\n" + " - {member}: member", value = "guild-chat-spy-format")
+        private final String guildChatSpyFormat = "&8[&aSPY&8]&8[&c{member}&8] &6∴&7 ";
+
+        @Setting(comment = "no permission", value = "no-permission")
+        private final String noPermission = "&cYou don't have permission to perform this command";
+
         public String getUserAlreadyInGuild() {
             return userAlreadyInGuild;
         }
@@ -170,6 +179,18 @@ public class LanguageConfig {
 
         public String getGuildNameAlreadyExists() {
             return guildNameAlreadyExists;
+        }
+
+        public String getGuildChatFormat() {
+            return guildChatFormat;
+        }
+
+        public String getGuildChatSpyFormat() {
+            return guildChatSpyFormat;
+        }
+
+        public String getNoPermission() {
+            return noPermission;
         }
     }
 
