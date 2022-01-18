@@ -260,6 +260,11 @@ public class LanguageConfig {
         @Setting(comment = "message when you change the guild displayname successfully" + "variable:\n" + " - {prefix}: new displayname", value = "command-prefix-success")
         private final String commandPrefixSuccess = "&7Guild name has been changed to &a&l{prefix}&7.";
 
+        @Setting(comment = "message when set motd", value = "command-set-motd-success")
+        private final String commandSetMotdSuccess = "&aYou have successfully set MOTD.";
+
+        @Setting(comment = "message when set motd", value = "command-set-motd-success-other")
+        private final String commandSetMotdSuccessOther = "&7New MOTD has been set. type &c/guild motd&7 to view new MOTD.";
 
         public String getCommandInfoMemberListPrint() {
             return commandInfoMemberListPrint;
@@ -347,6 +352,14 @@ public class LanguageConfig {
 
         public String getCommandInvalidGuildDisplayName() {
             return commandInvalidGuildDisplayName;
+        }
+
+        public String getCommandSetMotdSuccess() {
+            return commandSetMotdSuccess;
+        }
+
+        public String getCommandSetMotdSuccessOther() {
+            return commandSetMotdSuccessOther;
         }
     }
 

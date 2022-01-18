@@ -13,10 +13,10 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-@ICommandAliases({"chat", "msg", "c"})
-@ICommandPermission("rachamonguilds.command.guild.chat")
-@ICommandDescription("talk to members in guild")
-public class GuildChatCommand implements IPlayerCommand, IParameterizedCommand {
+@ICommandAliases({"setmotd"})
+@ICommandPermission("rachamonguilds.command.guild.set-motd")
+@ICommandDescription("Set guild message of the day")
+public class GuildSetMotdCommand implements IPlayerCommand, IParameterizedCommand {
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{
@@ -29,8 +29,7 @@ public class GuildChatCommand implements IPlayerCommand, IParameterizedCommand {
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException {
         Optional<String> message = args.getOne("message");
         if (!message.isPresent()) return CommandResult.empty();
-        RachamonGuilds.getInstance().getGuildManager().guildChat(source, message.get());
-
+        RachamonGuilds.getInstance().getGuildManager().setMotd(source, message.get());
         return CommandResult.success();
     }
 }

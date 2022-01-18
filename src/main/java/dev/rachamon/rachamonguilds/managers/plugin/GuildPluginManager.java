@@ -2,8 +2,10 @@ package dev.rachamon.rachamonguilds.managers.plugin;
 
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.RachamonGuildsModule;
+import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.events.RachamonGuildsReloadEvent;
 import dev.rachamon.rachamonguilds.api.exceptions.AnnotatedCommandException;
+import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.commands.GuildCommand;
 import dev.rachamon.rachamonguilds.configs.RachamonGuildsConfig;
 import dev.rachamon.rachamonguilds.database.GuildDatabase;
@@ -11,10 +13,15 @@ import dev.rachamon.rachamonguilds.database.GuildDatabaseKeys;
 import dev.rachamon.rachamonguilds.hooks.PlaceholderAPIHookService;
 import dev.rachamon.rachamonguilds.managers.guild.GuildDatabaseManager;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsHelperUtil;
+import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataRegistration;
+import org.spongepowered.api.entity.living.player.Player;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class GuildPluginManager {
 
@@ -66,6 +73,30 @@ public class GuildPluginManager {
 
         this.plugin.getLogger().debug("Rachamon Guilds reloaded");
 
+    }
+
+    public void sendGuildJoinMotd(Player source) {
+        try {
+            Sponge.getScheduler().createTaskBuilder()
+                    .execute(() -> {
+                        Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(source);
+                        if (!guild.isPresent()) return;
+                        if (guild.get().getMotd().isEmpty()) return;
+                        plugin.getGuildMessagingManager().sendGuildInfo(guild.get(), RachamonGuildsUtil.toText(guild.get().getMotd()));
+                    })
+                    .delay(2, TimeUnit.SECONDS)
+                    .submit(plugin);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void savePlayerLastJoin(Player source) {
+        Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(source);
+        if (!guild.isPresent()) return;
+        try {
+            plugin.getGuildManager().setLastJoin(source, new Date());
+        } catch (Exception ignored) {
+        }
     }
 
     public void postInitialize() throws IOException {

@@ -142,7 +142,7 @@ public class GuildManager {
         this.getGuildMembers(guild).forEach((member) -> {
             Optional<User> user = RachamonGuildsUtil.getUserFromUuid(member.getUuid());
             Optional<Player> player = RachamonGuildsUtil.getPlayerFromUuid(member.getUuid());
-            if (!user.isPresent() || !player.isPresent()) return;
+            if (!user.isPresent()) return;
 
             String name = user.get().isOnline() ? this.isPlayerGuildMaster(player.get(), guild) ? "&6&l" + player.get().getName() + "&r" : "&a&l" + player.get().getName() + "&r" : "&c&l" + player.get().getName() + "&r";
             String text = plugin.getConfig().getLanguage().getCommandCategory().getCommandInfoMemberListPrint().replaceAll("\\{index}", String.valueOf(i.get())).replaceAll("\\{first-join}", member.getFirstJoin().toString()).replaceAll("\\{name}", name);
@@ -398,6 +398,31 @@ public class GuildManager {
                         .replaceAll("\\{member}", source.getName()) + message)
                 ));
 
+    }
+
+    public void setMotd(Player source, String message) throws GuildCommandException {
+        Guild guild = this.getPlayerGuildOrThrow(source);
+
+        if (!guild.getMaster().equals(source.getUniqueId())) {
+            throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster());
+        }
+
+        this.guildService.setMotd(guild, message);
+        plugin.getGuildMessagingManager().response(source, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandSetMotdSuccess()));
+        plugin.getGuildMessagingManager().sendGuildInfo(guild, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandSetMotdSuccessOther()));
+
+    }
+
+    public void showMotd(Player source) throws GuildCommandException {
+        Guild guild = this.getPlayerGuildOrThrow(source);
+
+        plugin.getGuildMessagingManager().sendGuildInfo(guild, RachamonGuildsUtil.toText(guild.getMotd()));
+
+    }
+
+    public void setLastJoin(Player source, Date lastJoin) throws GuildCommandException {
+        Guild guild = this.getPlayerGuildOrThrow(source);
+        this.guildService.setMemberLastJoin(guild, source.getUniqueId(), lastJoin);
     }
 
 }

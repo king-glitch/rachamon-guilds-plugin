@@ -1,4 +1,4 @@
-package dev.rachamon.rachamonguilds.commands.subcommands.admin;
+package dev.rachamon.rachamonguilds.commands.subcommands;
 
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
@@ -10,10 +10,11 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
-@ICommandAliases({"reload"})
-@ICommandPermission("rachamonguilds.command.admin.reload")
-@ICommandDescription("Disband a guild.")
-public class GuildAdminReloadCommand implements IPlayerCommand, IParameterizedCommand {
+
+@ICommandAliases({"motd"})
+@ICommandPermission("rachamonguilds.command.guild.motd")
+@ICommandDescription("Guild message of the day")
+public class GuildMotdCommand implements IPlayerCommand, IParameterizedCommand {
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{};
@@ -22,11 +23,7 @@ public class GuildAdminReloadCommand implements IPlayerCommand, IParameterizedCo
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException {
-        try {
-            RachamonGuilds.getInstance().getPluginManager().reload();
-        } catch (Exception e) {
-            return CommandResult.empty();
-        }
+        RachamonGuilds.getInstance().getGuildManager().showMotd(source);
         return CommandResult.success();
     }
 }

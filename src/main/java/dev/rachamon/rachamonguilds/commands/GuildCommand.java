@@ -12,8 +12,25 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
-@ICommandChildren({GuildCreateCommand.class, GuildAdminReloadCommand.class, GuildListCommand.class, GuildChatCommand.class, GuildInfoCommand.class, GuildDisbandCommand.class, GuildTransferMasterCommand.class, GuildLeaveCommand.class, GuildKickCommand.class, GuildHomeCommand.class, GuildSetHomeCommand.class, GuildInviteCommand.class, GuildPrefixCommand.class, GuildNameCommand.class})
-@ICommandAliases("guilds")
+@ICommandChildren({
+        GuildCreateCommand.class,
+        GuildAdminReloadCommand.class,
+        GuildListCommand.class,
+        GuildChatCommand.class,
+        GuildInfoCommand.class,
+        GuildDisbandCommand.class,
+        GuildTransferMasterCommand.class,
+        GuildLeaveCommand.class,
+        GuildKickCommand.class,
+        GuildHomeCommand.class,
+        GuildSetHomeCommand.class,
+        GuildInviteCommand.class,
+        GuildPrefixCommand.class,
+        GuildNameCommand.class,
+        GuildMotdCommand.class,
+        GuildSetMotdCommand.class
+})
+@ICommandAliases({"guild", "guilds", "g"})
 @ICommandHelpText(title = "Main Guild Help", command = "help")
 @ICommandPermission("rachamonguilds.command.base")
 public class GuildCommand implements IPlayerCommand {

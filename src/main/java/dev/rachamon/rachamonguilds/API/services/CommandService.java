@@ -111,7 +111,7 @@ public final class CommandService {
         if (command.getChildren().size() == 0) return command.getSpec().getExecutor();
 
         PaginationList.Builder helpList = PaginationList.builder()
-                .title(Text.of(GOLD, TextStyles.BOLD, annotation.title()))
+                .title(Text.of(DARK_RED, TextStyles.BOLD, annotation.title()))
                 .padding(Text.of(DARK_GRAY, "="));
 
         Map<Command, Text> helpText = new LinkedHashMap<>();
@@ -149,7 +149,7 @@ public final class CommandService {
             prefix = annotation.prefix() + " ";
         }
 
-        Text commandText = Text.of(GOLD, "/" + prefix + base + alias);
+        Text commandText = Text.of(DARK_GRAY, "/", DARK_RED, prefix, RED, base + alias);
         help.append(commandText)
                 .onClick(TextActions.suggestCommand(commandText.toPlain()))
                 .onHover(TextActions.showText(Text.of(commandText)));
@@ -159,7 +159,7 @@ public final class CommandService {
             help.append(Text.of(" ", command.getSpec().getUsage(console())));
         }
 
-        command.getSpec().getShortDescription(console()).ifPresent(desc -> help.append(Text.of(DARK_GREEN, " : ", desc)));
+        command.getSpec().getShortDescription(console()).ifPresent(desc -> help.append(Text.of(GRAY, " : ", WHITE, desc)));
         return help.build();
     }
 

@@ -2,6 +2,7 @@ package dev.rachamon.rachamonguilds;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.services.CommandService;
 import dev.rachamon.rachamonguilds.api.services.GuildService;
 import dev.rachamon.rachamonguilds.configs.RachamonGuildsConfig;
@@ -13,12 +14,14 @@ import dev.rachamon.rachamonguilds.utils.RachamonGuildsHelperUtil;
 import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.game.GameReloadEvent;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
@@ -87,6 +90,16 @@ public class RachamonGuilds {
     public void onReload(GameReloadEvent event) throws IOException {
         getInstance().getLogger().info("On Plugin Reload");
         getInstance().getPluginManager().reload();
+    }
+
+    @Listener
+    public void onPlayerJoin(ClientConnectionEvent.Join event) {
+        getInstance().getPluginManager().sendGuildJoinMotd((Player) event.getSource());
+    }
+
+    @Listener
+    public void onPlayerQuit(ClientConnectionEvent.Disconnect event) {
+        getInstance().getPluginManager().savePlayerLastJoin((Player) event.getSource());
     }
 
     public static RachamonGuilds getInstance() {

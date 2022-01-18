@@ -6,6 +6,7 @@ import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.entities.GuildMember;
 import dev.rachamon.rachamonguilds.managers.guild.GuildDatabaseManager;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -111,4 +112,15 @@ public final class GuildService {
         return GuildDatabaseManager.delete(uuid);
     }
 
+    public void setMotd(Guild guild, String message) {
+        guild.setMotd(message);
+        this.save();
+    }
+
+    public void setMemberLastJoin(Guild guild, UUID uuid, Date lastJoin) {
+        Optional<GuildMember> member = this.getGuildMember(guild, uuid);
+        if (!member.isPresent()) return;
+        member.get().setLastJoin(lastJoin);
+        this.save();
+    }
 }

@@ -34,6 +34,9 @@ public class Guild implements ISpongeIdentifiable {
     @Setting(value = "home")
     private String home;
 
+    @Setting(value = "motd")
+    private String motd;
+
     public Guild(UUID leader, String name, String displayName, Date creationDate, Set<GuildMember> members) {
         this.uuid = leader;
         this.name = name;
@@ -146,5 +149,13 @@ public class Guild implements ISpongeIdentifiable {
 
     public void setHome(String home) {
         this.home = home;
+    }
+
+    public String getMotd() {
+        return motd;
+    }
+
+    public void setMotd(String motd) {
+        this.motd = motd;
     }
 }
