@@ -4,7 +4,6 @@ import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.interfaces.command.*;
 import dev.rachamon.rachamonguilds.commands.elements.GuildMemberCommandElement;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -25,7 +24,7 @@ public class GuildTransferMasterCommand implements IPlayerCommand, IParameterize
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException, GuildCommandException {
+    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException {
         Optional<String> member = args.getOne("member");
         if (!member.isPresent()) return CommandResult.empty();
         RachamonGuilds.getInstance().getGuildManager().transferGuildMaster(source, member.get());

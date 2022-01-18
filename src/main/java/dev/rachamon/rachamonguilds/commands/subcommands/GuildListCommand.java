@@ -2,8 +2,8 @@ package dev.rachamon.rachamonguilds.commands.subcommands;
 
 
 import dev.rachamon.rachamonguilds.RachamonGuilds;
+import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.interfaces.command.*;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -23,7 +23,7 @@ public class GuildListCommand implements IPlayerCommand, IParameterizedCommand {
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException {
+    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException {
 
         // create guild
         RachamonGuilds.getInstance().getGuildManager().printGuildList(source);

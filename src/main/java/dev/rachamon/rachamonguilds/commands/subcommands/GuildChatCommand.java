@@ -3,7 +3,6 @@ package dev.rachamon.rachamonguilds.commands.subcommands;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.interfaces.command.*;
-import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -27,7 +26,7 @@ public class GuildChatCommand implements IPlayerCommand, IParameterizedCommand {
 
     @Nonnull
     @Override
-    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws CommandException, GuildCommandException {
+    public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException {
         Optional<String> message = args.getOne("message");
         if (!message.isPresent()) return CommandResult.empty();
         RachamonGuilds.getInstance().getGuildManager().guildChat(source, message.get());

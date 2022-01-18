@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 @ICommandAliases({"admin reload"})
 @ICommandPermission("rachamonguilds.command.admin.reload")
 @ICommandDescription("Disband a guild.")
-public class GuildAdminReloadCommand implements IPlayerCommand, IAdminCommand, IParameterizedCommand {
+public class GuildAdminReloadCommand implements IPlayerCommand, IParameterizedCommand {
     @Override
     public CommandElement[] getArguments() {
         return new CommandElement[]{};
