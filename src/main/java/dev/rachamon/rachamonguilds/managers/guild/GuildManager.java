@@ -395,7 +395,10 @@ public class GuildManager {
                         .getLanguage()
                         .getGeneralCategory()
                         .getGuildChatFormat()
-                        .replaceAll("\\{member}", source.getName()) + message)
+                        .replaceAll("\\{member}", source.getName())
+                        .replaceAll("\\{guild-name}", guild.getName())
+                        + message)
+
                 ));
 
     }
