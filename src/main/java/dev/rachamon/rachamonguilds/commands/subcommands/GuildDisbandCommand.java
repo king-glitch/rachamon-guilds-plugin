@@ -10,6 +10,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Guild disband command.
+ */
 @ICommandAliases({"disband"})
 @ICommandPermission("rachamonguilds.command.guild.disband")
 @ICommandDescription("Disband a guild.")

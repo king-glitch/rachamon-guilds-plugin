@@ -13,6 +13,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild invite command.
+ */
 @ICommandAliases({"invite"})
 @ICommandPermission("rachamonguilds.command.guild.invite")
 @ICommandDescription("Invite player to the guild")

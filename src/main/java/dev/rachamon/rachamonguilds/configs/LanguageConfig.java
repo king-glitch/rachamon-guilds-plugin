@@ -3,6 +3,9 @@ package dev.rachamon.rachamonguilds.configs;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+/**
+ * The type Language config.
+ */
 @ConfigSerializable
 public class LanguageConfig {
 
@@ -15,6 +18,9 @@ public class LanguageConfig {
     @Setting(value = "question", comment = "Question Messages")
     private final QuestionCategory questionCategory = new QuestionCategory();
 
+    /**
+     * The type General category.
+     */
     @ConfigSerializable
     public static class GeneralCategory {
 
@@ -93,107 +99,235 @@ public class LanguageConfig {
         @Setting(comment = "no permission", value = "no-permission")
         private final String noPermission = "&cYou don't have permission to perform this command";
 
+        /**
+         * Gets user already in guild.
+         *
+         * @return the user already in guild
+         */
         public String getUserAlreadyInGuild() {
             return userAlreadyInGuild;
         }
 
+        /**
+         * Gets user not found.
+         *
+         * @return the user not found
+         */
         public String getUserNotFound() {
             return userNotFound;
         }
 
+        /**
+         * Gets prefix.
+         *
+         * @return the prefix
+         */
         public String getPrefix() {
             return prefix;
         }
 
+        /**
+         * Gets guild not found.
+         *
+         * @return the guild not found
+         */
         public String getGuildNotFound() {
             return guildNotFound;
         }
 
+        /**
+         * Gets disband not success.
+         *
+         * @return the disband not success
+         */
         public String getDisbandNotSuccess() {
             return disbandNotSuccess;
         }
 
+        /**
+         * Gets disband is success.
+         *
+         * @return the disband is success
+         */
         public String getDisbandIsSuccess() {
             return disbandIsSuccess;
         }
 
+        /**
+         * Gets target is not in guild.
+         *
+         * @return the target is not in guild
+         */
         public String getTargetIsNotInGuild() {
             return targetIsNotInGuild;
         }
 
+        /**
+         * Gets new guild master.
+         *
+         * @return the new guild master
+         */
         public String getNewGuildMaster() {
             return newGuildMaster;
         }
 
+        /**
+         * Gets member leave guild.
+         *
+         * @return the member leave guild
+         */
         public String getMemberLeaveGuild() {
             return memberLeaveGuild;
         }
 
+        /**
+         * Gets member join guild.
+         *
+         * @return the member join guild
+         */
         public String getMemberJoinGuild() {
             return memberJoinGuild;
         }
 
+        /**
+         * Gets something went wrong.
+         *
+         * @return the something went wrong
+         */
         public String getSomethingWentWrong() {
             return somethingWentWrong;
         }
 
+        /**
+         * Gets not guild master.
+         *
+         * @return the not guild master
+         */
         public String getNotGuildMaster() {
             return notGuildMaster;
         }
 
+        /**
+         * Gets member already in guild.
+         *
+         * @return the member already in guild
+         */
         public String getMemberAlreadyInGuild() {
             return memberAlreadyInGuild;
         }
 
+        /**
+         * Gets member already in another guild.
+         *
+         * @return the member already in another guild
+         */
         public String getMemberAlreadyInAnotherGuild() {
             return memberAlreadyInAnotherGuild;
         }
 
+        /**
+         * Gets invite accepted.
+         *
+         * @return the invite accepted
+         */
         public String getInviteAccepted() {
             return inviteAccepted;
         }
 
+        /**
+         * Gets invite declined.
+         *
+         * @return the invite declined
+         */
         public String getInviteDeclined() {
             return inviteDeclined;
         }
 
+        /**
+         * Gets invite player to guild.
+         *
+         * @return the invite player to guild
+         */
         public String getInvitePlayerToGuild() {
             return invitePlayerToGuild;
         }
 
+        /**
+         * Gets invited player to guild.
+         *
+         * @return the invited player to guild
+         */
         public String getInvitedPlayerToGuild() {
             return invitedPlayerToGuild;
         }
 
+        /**
+         * Gets invite accepted target.
+         *
+         * @return the invite accepted target
+         */
         public String getInviteAcceptedTarget() {
             return inviteAcceptedTarget;
         }
 
+        /**
+         * Gets invite declined target.
+         *
+         * @return the invite declined target
+         */
         public String getInviteDeclinedTarget() {
             return inviteDeclinedTarget;
         }
 
+        /**
+         * Gets user not in guild.
+         *
+         * @return the user not in guild
+         */
         public String getUserNotInGuild() {
             return userNotInGuild;
         }
 
+        /**
+         * Gets guild name already exists.
+         *
+         * @return the guild name already exists
+         */
         public String getGuildNameAlreadyExists() {
             return guildNameAlreadyExists;
         }
 
+        /**
+         * Gets guild chat format.
+         *
+         * @return the guild chat format
+         */
         public String getGuildChatFormat() {
             return guildChatFormat;
         }
 
+        /**
+         * Gets guild chat spy format.
+         *
+         * @return the guild chat spy format
+         */
         public String getGuildChatSpyFormat() {
             return guildChatSpyFormat;
         }
 
+        /**
+         * Gets no permission.
+         *
+         * @return the no permission
+         */
         public String getNoPermission() {
             return noPermission;
         }
     }
 
+    /**
+     * The type Command category.
+     */
     @ConfigSerializable
     public static class CommandCategory {
 
@@ -266,103 +400,226 @@ public class LanguageConfig {
         @Setting(comment = "message when set motd", value = "command-set-motd-success-other")
         private final String commandSetMotdSuccessOther = "&7New MOTD has been set. type &c/guild motd&7 to view new MOTD.";
 
+        /**
+         * Gets command info member list print.
+         *
+         * @return the command info member list print
+         */
         public String getCommandInfoMemberListPrint() {
             return commandInfoMemberListPrint;
         }
 
+        /**
+         * Gets command guild info print.
+         *
+         * @return the command guild info print
+         */
         public String getCommandGuildInfoPrint() {
             return commandGuildInfoPrint;
         }
 
+        /**
+         * Gets command created broadcast.
+         *
+         * @return the command created broadcast
+         */
         public String getCommandCreatedBroadcast() {
             return commandCreatedBroadcast;
         }
 
+        /**
+         * Gets command created success.
+         *
+         * @return the command created success
+         */
         public String getCommandCreatedSuccess() {
             return commandCreatedSuccess;
         }
 
+        /**
+         * Gets command created name too short.
+         *
+         * @return the command created name too short
+         */
         public String getCommandCreatedNameTooShort() {
             return commandCreatedNameTooShort;
         }
 
+        /**
+         * Gets command created name too long.
+         *
+         * @return the command created name too long
+         */
         public String getCommandCreatedNameTooLong() {
             return commandCreatedNameTooLong;
         }
 
+        /**
+         * Gets command created display name too short.
+         *
+         * @return the command created display name too short
+         */
         public String getCommandCreatedDisplayNameTooShort() {
             return commandCreatedDisplayNameTooShort;
         }
 
+        /**
+         * Gets command created display name too long.
+         *
+         * @return the command created display name too long
+         */
         public String getCommandCreatedDisplayNameTooLong() {
             return commandCreatedDisplayNameTooLong;
         }
 
+        /**
+         * Gets command list guild print.
+         *
+         * @return the command list guild print
+         */
         public String getCommandListGuildPrint() {
             return commandListGuildPrint;
         }
 
+        /**
+         * Gets command disband broadcast.
+         *
+         * @return the command disband broadcast
+         */
         public String getCommandDisbandBroadcast() {
             return commandDisbandBroadcast;
         }
 
+        /**
+         * Gets command transfer success.
+         *
+         * @return the command transfer success
+         */
         public String getCommandTransferSuccess() {
             return commandTransferSuccess;
         }
 
+        /**
+         * Gets command leave guild master.
+         *
+         * @return the command leave guild master
+         */
         public String getCommandLeaveGuildMaster() {
             return commandLeaveGuildMaster;
         }
 
+        /**
+         * Gets command leave guild success.
+         *
+         * @return the command leave guild success
+         */
         public String getCommandLeaveGuildSuccess() {
             return commandLeaveGuildSuccess;
         }
 
+        /**
+         * Gets command kick self.
+         *
+         * @return the command kick self
+         */
         public String getCommandKickSelf() {
             return commandKickSelf;
         }
 
+        /**
+         * Gets command kick success.
+         *
+         * @return the command kick success
+         */
         public String getCommandKickSuccess() {
             return commandKickSuccess;
         }
 
+        /**
+         * Gets command name success.
+         *
+         * @return the command name success
+         */
         public String getCommandNameSuccess() {
             return commandNameSuccess;
         }
 
+        /**
+         * Gets command prefix success.
+         *
+         * @return the command prefix success
+         */
         public String getCommandPrefixSuccess() {
             return commandPrefixSuccess;
         }
 
+        /**
+         * Gets command set home success.
+         *
+         * @return the command set home success
+         */
         public String getCommandSetHomeSuccess() {
             return commandSetHomeSuccess;
         }
 
+        /**
+         * Gets command home success.
+         *
+         * @return the command home success
+         */
         public String getCommandHomeSuccess() {
             return commandHomeSuccess;
         }
 
+        /**
+         * Gets command home not found.
+         *
+         * @return the command home not found
+         */
         public String getCommandHomeNotFound() {
             return commandHomeNotFound;
         }
 
+        /**
+         * Gets command invalid guild name.
+         *
+         * @return the command invalid guild name
+         */
         public String getCommandInvalidGuildName() {
             return commandInvalidGuildName;
         }
 
+        /**
+         * Gets command invalid guild display name.
+         *
+         * @return the command invalid guild display name
+         */
         public String getCommandInvalidGuildDisplayName() {
             return commandInvalidGuildDisplayName;
         }
 
+        /**
+         * Gets command set motd success.
+         *
+         * @return the command set motd success
+         */
         public String getCommandSetMotdSuccess() {
             return commandSetMotdSuccess;
         }
 
+        /**
+         * Gets command set motd success other.
+         *
+         * @return the command set motd success other
+         */
         public String getCommandSetMotdSuccessOther() {
             return commandSetMotdSuccessOther;
         }
     }
 
+    /**
+     * The type Question category.
+     */
     @ConfigSerializable
     public static class QuestionCategory {
         @Setting(comment = "question click to view.", value = "click-to-view")
@@ -383,39 +640,84 @@ public class LanguageConfig {
         @Setting(comment = "declined button", value = "declined-button")
         private final String declinedButton = "&cDeclined";
 
+        /**
+         * Gets already responded.
+         *
+         * @return the already responded
+         */
         public String getAlreadyResponded() {
             return alreadyResponded;
         }
 
+        /**
+         * Gets must be player.
+         *
+         * @return the must be player
+         */
         public String getMustBePlayer() {
             return mustBePlayer;
         }
 
+        /**
+         * Gets click to answer.
+         *
+         * @return the click to answer
+         */
         public String getClickToAnswer() {
             return clickToAnswer;
         }
 
+        /**
+         * Gets click to view.
+         *
+         * @return the click to view
+         */
         public String getClickToView() {
             return clickToView;
         }
 
+        /**
+         * Gets declined button.
+         *
+         * @return the declined button
+         */
         public String getDeclinedButton() {
             return declinedButton;
         }
 
+        /**
+         * Gets accept button.
+         *
+         * @return the accept button
+         */
         public String getAcceptButton() {
             return acceptButton;
         }
     }
 
+    /**
+     * Gets general category.
+     *
+     * @return the general category
+     */
     public GeneralCategory getGeneralCategory() {
         return generalCategory;
     }
 
+    /**
+     * Gets command category.
+     *
+     * @return the command category
+     */
     public CommandCategory getCommandCategory() {
         return commandCategory;
     }
 
+    /**
+     * Gets question category.
+     *
+     * @return the question category
+     */
     public QuestionCategory getQuestionCategory() {
         return questionCategory;
     }

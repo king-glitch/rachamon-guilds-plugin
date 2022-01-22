@@ -13,6 +13,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild set motd command.
+ */
 @ICommandAliases({"setmotd"})
 @ICommandPermission("rachamonguilds.command.guild.set-motd")
 @ICommandDescription("Set guild message of the day")

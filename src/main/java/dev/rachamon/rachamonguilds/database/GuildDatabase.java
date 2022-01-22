@@ -18,15 +18,26 @@ import org.spongepowered.api.data.value.mutable.Value;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * The type Guild database.
+ */
 public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Immutable> {
 
     private UUID guildUuid;
 
+    /**
+     * Instantiates a new Guild database.
+     */
     GuildDatabase() {
         this.guildUuid = null;
         this.registerGettersAndSetters();
     }
 
+    /**
+     * Instantiates a new Guild database.
+     *
+     * @param guildUuid the guild uuid
+     */
     public GuildDatabase(UUID guildUuid) {
         this.guildUuid = guildUuid;
         this.registerGettersAndSetters();
@@ -56,6 +67,12 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
         return this.from((DataView) container);
     }
 
+    /**
+     * From optional.
+     *
+     * @param container the container
+     * @return the optional
+     */
     public Optional<GuildDatabase> from(DataView container) {
         container
                 .getString(GuildDatabaseKeys.GUILD.getQuery())
@@ -84,22 +101,45 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
     }
 
 
+    /**
+     * Gets guild uuid.
+     *
+     * @return the guild uuid
+     */
     public UUID getGuildUuid() {
         return guildUuid;
     }
 
+    /**
+     * Sets guild uuid.
+     *
+     * @param guildUuid the guild uuid
+     */
     public void setGuildUuid(UUID guildUuid) {
         this.guildUuid = guildUuid;
     }
 
+    /**
+     * Gets guild.
+     *
+     * @return the guild
+     */
     public Optional<Guild> getGuild() {
         return RachamonGuilds.getInstance().getGuildService().getGuild(this.guildUuid);
     }
 
+    /**
+     * Gets guild uuid value.
+     *
+     * @return the guild uuid value
+     */
     public Value<UUID> getGuildUuidValue() {
         return Sponge.getRegistry().getValueFactory().createValue(GuildDatabaseKeys.GUILD, this.getGuildUuid());
     }
 
+    /**
+     * The type Immutable.
+     */
     public static class Immutable extends AbstractImmutableData<Immutable, GuildDatabase> {
 
         private UUID guildUuid;
@@ -108,10 +148,18 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
             registerGetters();
         }
 
+        /**
+         * Instantiates a new Immutable.
+         */
         Immutable() {
             this.guildUuid = null;
         }
 
+        /**
+         * Instantiates a new Immutable.
+         *
+         * @param guildUuid the guild uuid
+         */
         Immutable(UUID guildUuid) {
             this.guildUuid = guildUuid;
         }
@@ -137,6 +185,11 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
             return super.toContainer().set(GuildDatabaseKeys.GUILD.getQuery(), this.guildUuid);
         }
 
+        /**
+         * Gets guild uuid.
+         *
+         * @return the guild uuid
+         */
         public ImmutableValue<UUID> getGuildUuid() {
             return Sponge
                     .getRegistry()
@@ -147,7 +200,13 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
 
     }
 
+    /**
+     * The type Builder.
+     */
     public static class Builder extends AbstractDataBuilder<GuildDatabase> implements DataManipulatorBuilder<GuildDatabase, Immutable> {
+        /**
+         * Instantiates a new Builder.
+         */
         public Builder() {
             super(GuildDatabase.class, 1);
         }

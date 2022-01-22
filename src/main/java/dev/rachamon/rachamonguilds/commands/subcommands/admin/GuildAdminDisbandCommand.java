@@ -14,6 +14,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild admin disband command.
+ */
 @ICommandAliases({"disband"})
 @ICommandPermission("rachamonguilds.command.admin.disband")
 @ICommandDescription("Disband a guild.")

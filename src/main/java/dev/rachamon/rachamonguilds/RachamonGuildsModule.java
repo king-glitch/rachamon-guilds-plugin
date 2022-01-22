@@ -6,7 +6,11 @@ import dev.rachamon.rachamonguilds.api.services.GuildService;
 import dev.rachamon.rachamonguilds.managers.guild.GuildManager;
 import dev.rachamon.rachamonguilds.managers.guild.GuildMessagingManager;
 
+/**
+ * The type Rachamon guilds module.
+ */
 public class RachamonGuildsModule extends AbstractModule {
+
     @Override
     protected void configure() {
         bind(GuildManager.class).in(Scopes.SINGLETON);

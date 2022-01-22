@@ -6,6 +6,9 @@ import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.plugin.PluginContainer;
 
+/**
+ * The type Rachamon guilds helper util.
+ */
 public class RachamonGuildsHelperUtil implements IRachamonGuildsHelper {
     @Override
     public Cause getCause(CommandSource src) {

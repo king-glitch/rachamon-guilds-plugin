@@ -14,7 +14,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Guild list command element.
+ */
 public class GuildListCommandElement extends CommandElement {
+    /**
+     * Instantiates a new Guild list command element.
+     *
+     * @param key the key
+     */
     public GuildListCommandElement(@Nullable Text key) {
         super(key);
     }

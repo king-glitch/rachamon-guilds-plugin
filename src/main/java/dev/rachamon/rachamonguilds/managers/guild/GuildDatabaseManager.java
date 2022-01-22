@@ -13,6 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * The type Guild database manager.
+ */
 public class GuildDatabaseManager {
 
     private static final Path storageDirectory = RachamonGuilds.getInstance().getDirectory().resolve("storage");
@@ -21,14 +24,27 @@ public class GuildDatabaseManager {
 
     private static Map<UUID, Guild> guilds = new HashMap<>();
 
+    /**
+     * Gets guilds.
+     *
+     * @return the guilds
+     */
     public static Map<UUID, Guild> getGuilds() {
         return guilds;
     }
 
+    /**
+     * Sets guilds.
+     *
+     * @param guilds the guilds
+     */
     public static void setGuilds(Map<UUID, Guild> guilds) {
         GuildDatabaseManager.guilds = guilds;
     }
 
+    /**
+     * Initialize.
+     */
     public static void initialize() {
         Gson gson = new Gson();
 
@@ -52,6 +68,9 @@ public class GuildDatabaseManager {
         }
     }
 
+    /**
+     * Save.
+     */
     public static void save() {
         Gson gson = new Gson();
 
@@ -71,12 +90,23 @@ public class GuildDatabaseManager {
         }
     }
 
+    /**
+     * Delete boolean.
+     *
+     * @param uuid the uuid
+     * @return the boolean
+     */
     public static boolean delete(UUID uuid) {
         Path path = guildsDirectory.resolve(uuid + ".json");
         RachamonGuilds.getInstance().getLogger().debug("&cDeleting guild " + uuid + " from the database.");
         return path.toFile().delete();
     }
 
+    /**
+     * Save.
+     *
+     * @param guild the guild
+     */
     public static void save(Guild guild) {
         Gson gson = new Gson();
         Path path = storageDirectory.resolve(guild.getId() + ".json");

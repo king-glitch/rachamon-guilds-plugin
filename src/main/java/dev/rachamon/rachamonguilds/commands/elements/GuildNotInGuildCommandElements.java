@@ -22,7 +22,15 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * The type Guild not in guild command elements.
+ */
 public class GuildNotInGuildCommandElements extends CommandElement {
+    /**
+     * Instantiates a new Guild not in guild command elements.
+     *
+     * @param key the key
+     */
     public GuildNotInGuildCommandElements(@Nullable Text key) {
         super(key);
     }

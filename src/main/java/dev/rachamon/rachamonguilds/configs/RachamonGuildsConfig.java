@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 
+/**
+ * The type Rachamon guilds config.
+ */
 public class RachamonGuildsConfig {
     private final RachamonGuilds plugin = RachamonGuilds.getInstance();
     private CommentedConfigurationNode configRoot;
@@ -23,6 +26,12 @@ public class RachamonGuildsConfig {
     private MainConfig root;
     private LanguageConfig language;
 
+    /**
+     * Instantiates a new Rachamon guilds config.
+     *
+     * @param factory the factory
+     * @throws IOException the io exception
+     */
     public RachamonGuildsConfig(GuiceObjectMapperFactory factory) throws IOException {
         this.plugin.getLogger().info("Loading configuration -> config module");
         try {
@@ -59,10 +68,18 @@ public class RachamonGuildsConfig {
         }
     }
 
+    /**
+     * Gets root.
+     *
+     * @return the root
+     */
     public MainConfig getRoot() {
         return this.root;
     }
 
+    /**
+     * Save.
+     */
     public void save() {
         try {
             configRoot.setValue(TypeToken.of(MainConfig.class), root);
@@ -74,6 +91,11 @@ public class RachamonGuildsConfig {
         }
     }
 
+    /**
+     * Gets language.
+     *
+     * @return the language
+     */
     public LanguageConfig getLanguage() {
         return language;
     }

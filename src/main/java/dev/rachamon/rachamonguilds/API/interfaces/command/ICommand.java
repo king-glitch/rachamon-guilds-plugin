@@ -8,6 +8,9 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The interface Command.
+ */
 public interface ICommand extends CommandExecutor {
     @Nonnull
     CommandResult execute(@Nonnull CommandSource source, @Nonnull CommandContext args) throws GuildCommandException;

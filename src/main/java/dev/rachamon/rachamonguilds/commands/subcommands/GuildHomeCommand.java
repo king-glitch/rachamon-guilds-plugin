@@ -10,6 +10,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Guild home command.
+ */
 @ICommandAliases({"home", "house"})
 @ICommandPermission("rachamonguilds.command.guild.home")
 @ICommandDescription("Teleport to guild house")

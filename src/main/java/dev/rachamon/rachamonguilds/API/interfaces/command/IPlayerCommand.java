@@ -9,6 +9,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The interface Player command.
+ */
 public interface IPlayerCommand extends CommandExecutor {
     @Override
     @Nonnull
@@ -20,6 +23,14 @@ public interface IPlayerCommand extends CommandExecutor {
         return execute((Player) src, args);
     }
 
+    /**
+     * Execute command result.
+     *
+     * @param source the source
+     * @param args   the args
+     * @return the command result
+     * @throws GuildCommandException the guild command exception
+     */
     @Nonnull
     CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException;
 }

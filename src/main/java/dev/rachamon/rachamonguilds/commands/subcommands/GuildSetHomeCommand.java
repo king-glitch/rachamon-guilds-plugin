@@ -10,6 +10,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Guild set home command.
+ */
 @ICommandAliases({"sethome", "homeset"})
 @ICommandPermission("rachamonguilds.command.guild.sethome")
 @ICommandDescription("set a guild house location")

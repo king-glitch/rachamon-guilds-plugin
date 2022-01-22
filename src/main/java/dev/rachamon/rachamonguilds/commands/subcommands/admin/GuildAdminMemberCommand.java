@@ -18,6 +18,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild admin member command.
+ */
 @ICommandAliases({"member"})
 @ICommandPermission("rachamonguilds.command.admin.member")
 @ICommandDescription("manage a guild member.")

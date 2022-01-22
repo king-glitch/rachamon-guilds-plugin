@@ -15,7 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Guild command element.
+ */
 public class GuildCommandElement extends CommandElement {
+    /**
+     * Instantiates a new Guild command element.
+     *
+     * @param key the key
+     */
     public GuildCommandElement(Text key) {
         super(key);
     }

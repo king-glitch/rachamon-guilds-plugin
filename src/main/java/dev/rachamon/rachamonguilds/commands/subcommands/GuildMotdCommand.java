@@ -11,6 +11,9 @@ import org.spongepowered.api.entity.living.player.Player;
 import javax.annotation.Nonnull;
 
 
+/**
+ * The type Guild motd command.
+ */
 @ICommandAliases({"motd"})
 @ICommandPermission("rachamonguilds.command.guild.motd")
 @ICommandDescription("Guild message of the day")

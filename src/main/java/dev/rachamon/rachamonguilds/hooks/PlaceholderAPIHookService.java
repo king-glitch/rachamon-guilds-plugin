@@ -13,8 +13,16 @@ import org.spongepowered.api.entity.living.player.User;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * The type Placeholder api hook service.
+ */
 public class PlaceholderAPIHookService {
 
+    /**
+     * Instantiates a new Placeholder api hook service.
+     *
+     * @param plugin the plugin
+     */
     public PlaceholderAPIHookService(RachamonGuilds plugin) {
         PlaceholderService service = Sponge.getServiceManager().provideUnchecked(PlaceholderService.class);
 
@@ -31,6 +39,12 @@ public class PlaceholderAPIHookService {
         });
     }
 
+    /**
+     * Guild name string.
+     *
+     * @param commandSource the command source
+     * @return the string
+     */
     @Placeholder(id = "rachamonguilds-name")
     public String guildName(@Source CommandSource commandSource) {
         Player player = (Player) commandSource;
@@ -38,6 +52,12 @@ public class PlaceholderAPIHookService {
         return guild.isPresent() ? guild.get().getName() : "";
     }
 
+    /**
+     * Guild display name string.
+     *
+     * @param commandSource the command source
+     * @return the string
+     */
     @Placeholder(id = "rachamonguilds-displayname")
     public String guildDisplayName(@Source CommandSource commandSource) {
         Player player = (Player) commandSource;
@@ -45,6 +65,12 @@ public class PlaceholderAPIHookService {
         return guild.isPresent() ? guild.get().getDisplayName() : "";
     }
 
+    /**
+     * Guild id string.
+     *
+     * @param commandSource the command source
+     * @return the string
+     */
     @Placeholder(id = "rachamonguilds-id")
     public String guildId(@Source CommandSource commandSource) {
         Player player = (Player) commandSource;
@@ -52,6 +78,12 @@ public class PlaceholderAPIHookService {
         return guild.map(value -> value.getId().toString()).orElse("");
     }
 
+    /**
+     * Guild role string.
+     *
+     * @param commandSource the command source
+     * @return the string
+     */
     @Placeholder(id = "rachamonguilds-role")
     public String guildRole(@Source CommandSource commandSource) {
         Player player = (Player) commandSource;
@@ -59,6 +91,12 @@ public class PlaceholderAPIHookService {
         return guild.map(value -> value.getMaster().equals(player.getUniqueId()) ? "Master" : "Member").orElse("");
     }
 
+    /**
+     * Guild master string.
+     *
+     * @param commandSource the command source
+     * @return the string
+     */
     @Placeholder(id = "rachamonguilds-master")
     public String guildMaster(@Source CommandSource commandSource) {
         Player player = (Player) commandSource;

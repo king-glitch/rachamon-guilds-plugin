@@ -13,6 +13,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild prefix command.
+ */
 @ICommandAliases({"prefix", "displayname"})
 @ICommandPermission("rachamonguilds.command.guild.prefix")
 @ICommandDescription("Set guild prefix")

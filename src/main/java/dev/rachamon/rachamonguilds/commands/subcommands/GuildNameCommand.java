@@ -13,6 +13,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild name command.
+ */
 @ICommandAliases({"name"})
 @ICommandPermission("rachamonguilds.command.guild.name")
 @ICommandDescription("Set guild name")

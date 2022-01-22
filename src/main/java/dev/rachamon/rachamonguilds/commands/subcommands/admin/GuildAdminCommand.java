@@ -9,6 +9,9 @@ import org.spongepowered.api.command.args.CommandContext;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Guild admin command.
+ */
 @ICommandAliases({"admin"})
 @ICommandPermission("rachamonguilds.command.admin.base")
 @ICommandDescription("guild admin base")

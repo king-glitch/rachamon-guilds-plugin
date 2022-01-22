@@ -13,6 +13,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild chat command.
+ */
 @ICommandAliases({"chat", "msg", "c"})
 @ICommandPermission("rachamonguilds.command.guild.chat")
 @ICommandDescription("talk to members in guild")

@@ -11,6 +11,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Guild list command.
+ */
 @ICommandAliases({"list", "ls"})
 @ICommandPermission("rachamonguilds.command.guild.list")
 @ICommandDescription("Guild Lists")

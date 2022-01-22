@@ -13,6 +13,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild kick command.
+ */
 @ICommandAliases({"kick"})
 @ICommandPermission("rachamonguilds.command.guild.kick")
 @ICommandDescription("Kick member from guild.")

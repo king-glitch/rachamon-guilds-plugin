@@ -20,7 +20,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * The type Guild member command element.
+ */
 public class GuildMemberCommandElement extends CommandElement {
+    /**
+     * Instantiates a new Guild member command element.
+     *
+     * @param key the key
+     */
     public GuildMemberCommandElement(@Nullable Text key) {
         super(key);
     }

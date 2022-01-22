@@ -10,6 +10,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Guild admin reload command.
+ */
 @ICommandAliases({"reload"})
 @ICommandPermission("rachamonguilds.command.admin.reload")
 @ICommandDescription("reload guild plugin.")

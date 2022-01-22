@@ -11,6 +11,9 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Guild leave command.
+ */
 @ICommandAliases({"leave", "exit"})
 @ICommandPermission("rachamonguilds.command.guild.leave")
 @ICommandDescription("Leave a guild")

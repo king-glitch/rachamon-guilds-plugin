@@ -13,6 +13,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild transfer master command.
+ */
 @ICommandAliases({"transfer"})
 @ICommandPermission("rachamonguilds.command.guild.transfer")
 @ICommandDescription("Transfer master to guild member.")

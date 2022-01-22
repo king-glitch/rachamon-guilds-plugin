@@ -19,19 +19,43 @@ import java.util.stream.Collectors;
 
 import static org.spongepowered.api.text.format.TextColors.*;
 
+/**
+ * The type Command service.
+ */
 public final class CommandService {
 
     private static final CommandService instance = new CommandService();
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static CommandService getInstance() {
         return instance;
     }
 
+    /**
+     * Register.
+     *
+     * @param <T>      the type parameter
+     * @param executor the executor
+     * @param plugin   the plugin
+     * @throws AnnotatedCommandException the annotated command exception
+     */
     public <T extends CommandExecutor> void register(T executor, Object plugin) throws AnnotatedCommandException {
         Command command = buildCommandSpec(executor);
         Sponge.getCommandManager().register(plugin, command.getSpec(), command.getAliases());
     }
 
+    /**
+     * Build command spec command.
+     *
+     * @param <T>     the type parameter
+     * @param command the command
+     * @return the command
+     * @throws AnnotatedCommandException the annotated command exception
+     */
     public <T extends CommandExecutor> Command buildCommandSpec(T command) throws AnnotatedCommandException {
 
         Class<? extends CommandExecutor> commandClass = command.getClass();

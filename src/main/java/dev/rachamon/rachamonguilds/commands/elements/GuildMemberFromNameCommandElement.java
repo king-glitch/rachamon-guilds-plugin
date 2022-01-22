@@ -22,7 +22,15 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * The type Guild member from name command element.
+ */
 public class GuildMemberFromNameCommandElement extends CommandElement {
+    /**
+     * Instantiates a new Guild member from name command element.
+     *
+     * @param key the key
+     */
     public GuildMemberFromNameCommandElement(@Nullable Text key) {
         super(key);
     }

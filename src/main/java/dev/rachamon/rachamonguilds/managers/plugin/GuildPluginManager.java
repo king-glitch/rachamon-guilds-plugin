@@ -22,10 +22,16 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The type Guild plugin manager.
+ */
 public class GuildPluginManager {
 
     private final RachamonGuilds plugin = RachamonGuilds.getInstance();
 
+    /**
+     * Initialize.
+     */
     public void initialize() {
         this.plugin.setComponents(new RachamonGuilds.Components());
         this.plugin.setGuildInjector(this.plugin.getSpongeInjector().createChildInjector(new RachamonGuildsModule()));
@@ -33,6 +39,9 @@ public class GuildPluginManager {
         this.plugin.setIsInitialized(true);
     }
 
+    /**
+     * Pre initialize.
+     */
     public void preInitialize() {
         GuildDatabaseKeys.GUILD_DATA_REGISTRATION = DataRegistration
                 .builder()
@@ -44,6 +53,9 @@ public class GuildPluginManager {
                 .build();
     }
 
+    /**
+     * Start.
+     */
     public void start() {
 
         this.plugin.getLogger().debug("Initializing Databases...");
@@ -57,6 +69,11 @@ public class GuildPluginManager {
         }
     }
 
+    /**
+     * Reload.
+     *
+     * @throws IOException the io exception
+     */
     public void reload() throws IOException {
 
         this.plugin.getLogger().debug("Reloading Rachamon Guilds...");
@@ -74,6 +91,11 @@ public class GuildPluginManager {
 
     }
 
+    /**
+     * Send guild join motd.
+     *
+     * @param source the source
+     */
     public void sendGuildJoinMotd(Player source) {
         try {
             Sponge.getScheduler().createTaskBuilder()
@@ -91,6 +113,11 @@ public class GuildPluginManager {
         }
     }
 
+    /**
+     * Save player last join.
+     *
+     * @param source the source
+     */
     public void savePlayerLastJoin(Player source) {
         Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(source);
         if (!guild.isPresent()) return;
@@ -101,6 +128,11 @@ public class GuildPluginManager {
         }
     }
 
+    /**
+     * Post initialize.
+     *
+     * @throws IOException the io exception
+     */
     public void postInitialize() throws IOException {
 
         this.plugin.setConfig(new RachamonGuildsConfig(this.plugin.getFactory()));

@@ -12,7 +12,15 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Guild management command element.
+ */
 public class GuildManagementCommandElement extends CommandElement {
+    /**
+     * Instantiates a new Guild management command element.
+     *
+     * @param key the key
+     */
     public GuildManagementCommandElement(@Nullable Text key) {
         super(key);
     }

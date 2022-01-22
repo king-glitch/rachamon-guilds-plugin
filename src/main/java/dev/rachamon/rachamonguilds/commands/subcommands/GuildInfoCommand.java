@@ -14,6 +14,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
+/**
+ * The type Guild info command.
+ */
 @ICommandAliases({"info", "if", "data"})
 @ICommandPermission("rachamonguilds.command.guild.info")
 @ICommandDescription("Guild Info")

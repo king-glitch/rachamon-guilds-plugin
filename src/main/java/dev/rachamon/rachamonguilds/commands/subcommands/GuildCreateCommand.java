@@ -17,6 +17,9 @@ import org.spongepowered.api.text.Text;
 import javax.annotation.Nonnull;
 import java.util.regex.Pattern;
 
+/**
+ * The type Guild create command.
+ */
 @ICommandAliases({"create"})
 @ICommandPermission("rachamonguilds.command.guild.create")
 @ICommandDescription("Creates a guild")

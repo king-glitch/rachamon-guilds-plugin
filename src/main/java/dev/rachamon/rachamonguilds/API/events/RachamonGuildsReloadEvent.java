@@ -7,6 +7,9 @@ import org.spongepowered.api.event.impl.AbstractEvent;
 
 import javax.annotation.Nonnull;
 
+/**
+ * The type Rachamon guilds reload event.
+ */
 public class RachamonGuildsReloadEvent extends AbstractEvent implements Event {
     @Nonnull
     @Override

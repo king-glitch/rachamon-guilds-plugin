@@ -26,6 +26,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * The type Guild manager.
+ */
 public class GuildManager {
 
     private static final RachamonGuilds plugin = RachamonGuilds.getInstance();
@@ -36,27 +39,68 @@ public class GuildManager {
     @Inject
     private GuildMessagingManager guildMessagingManager;
 
+    /**
+     * Is player guild master boolean.
+     *
+     * @param player the player
+     * @param guild  the guild
+     * @return the boolean
+     */
     public boolean isPlayerGuildMaster(Player player, Guild guild) {
         return player.getUniqueId().equals(guild.getMaster());
     }
 
+    /**
+     * Is player guild master boolean.
+     *
+     * @param uuid  the uuid
+     * @param guild the guild
+     * @return the boolean
+     */
     public boolean isPlayerGuildMaster(UUID uuid, Guild guild) {
         return uuid.equals(guild.getMaster());
     }
 
+    /**
+     * Is player in guild boolean.
+     *
+     * @param player the player
+     * @return the boolean
+     */
     public boolean isPlayerInGuild(Player player) {
         Optional<Guild> guild = this.getPlayerGuild(player);
         return guild.isPresent();
     }
 
+    /**
+     * Is player in guild or send error.
+     *
+     * @param player the player
+     * @throws GuildCommandException the guild command exception
+     */
     public void isPlayerInGuildOrSendError(Player player) throws GuildCommandException {
         this.getPlayerGuild(player).orElseThrow(GuildCommandException::notInGuild);
     }
 
+    /**
+     * Is player in guild boolean.
+     *
+     * @param guild  the guild
+     * @param player the player
+     * @return the boolean
+     */
     public boolean isPlayerInGuild(Guild guild, Player player) {
         return this.getGuildMembers(guild).stream().anyMatch(member -> member.getId().equals(player.getUniqueId()));
     }
 
+    /**
+     * Create.
+     *
+     * @param source      the source
+     * @param name        the name
+     * @param displayName the display name
+     * @throws GuildCommandException the guild command exception
+     */
     public void create(Player source, String name, String displayName) throws GuildCommandException {
         if (this.isPlayerInGuild(source)) {
             throw new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getUserAlreadyInGuild());
@@ -73,6 +117,12 @@ public class GuildManager {
         RachamonGuildsUtil.broadcast(plugin.getConfig().getLanguage().getCommandCategory().getCommandCreatedBroadcast().replaceAll("\\{guild-name}", guild.getName()));
     }
 
+    /**
+     * Disband.
+     *
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void disband(Player source) throws GuildCommandException {
 
         Guild guild = this.getPlayerGuildOrThrow(source);
@@ -86,6 +136,13 @@ public class GuildManager {
 
     }
 
+    /**
+     * Disband.
+     *
+     * @param guild  the guild
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void disband(Guild guild, CommandSource source) throws GuildCommandException {
 
         LanguageConfig language = plugin.getConfig().getLanguage();
@@ -105,6 +162,12 @@ public class GuildManager {
         }
     }
 
+    /**
+     * Gets player guild.
+     *
+     * @param source the source
+     * @return the player guild
+     */
     public Optional<Guild> getPlayerGuild(Player source) {
 
         for (Guild guild : guildService.getGuildList()) {
@@ -115,14 +178,32 @@ public class GuildManager {
         return Optional.empty();
     }
 
+    /**
+     * Gets online guild members.
+     *
+     * @param guild the guild
+     * @return the online guild members
+     */
     public Set<GuildMember> getOnlineGuildMembers(Guild guild) {
         return guild.getMembers().stream().filter(member -> Sponge.getServer().getPlayer(member.getUuid()).isPresent()).collect(Collectors.toSet());
     }
 
+    /**
+     * Gets online guild members as player.
+     *
+     * @param guild the guild
+     * @return the online guild members as player
+     */
     public Set<Player> getOnlineGuildMembersAsPlayer(Guild guild) {
         return guild.getMembers().stream().map(member -> Sponge.getServer().getPlayer(member.getUniqueId())).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toSet());
     }
 
+    /**
+     * Print guild list.
+     *
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void printGuildList(Player source) throws GuildCommandException {
         PaginationList.Builder builder = PaginationList.builder().title(RachamonGuildsUtil.toText("&6&lGuilds")).padding(RachamonGuildsUtil.toText("&8="));
 
@@ -138,12 +219,24 @@ public class GuildManager {
         builder.contents(contents).sendTo(source);
     }
 
+    /**
+     * Print guild member list.
+     *
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void printGuildMemberList(Player source) throws GuildCommandException {
         Guild guild = getPlayerGuildOrThrow(source);
 
         this.printGuildMemberList(source, guild);
     }
 
+    /**
+     * Print guild member list.
+     *
+     * @param source the source
+     * @param guild  the guild
+     */
     public void printGuildMemberList(Player source, Guild guild) {
         PaginationList.Builder builder = PaginationList.builder().title(RachamonGuildsUtil.toText("&6&l" + guild.getName())).padding(RachamonGuildsUtil.toText("&8="));
 
@@ -168,6 +261,13 @@ public class GuildManager {
         builder.contents(contents).sendTo(source);
     }
 
+    /**
+     * Gets user.
+     *
+     * @param id the id
+     * @return the user
+     * @throws GuildCommandException the guild command exception
+     */
     public static User getUser(UUID id) throws GuildCommandException {
         UserStorageService userStorageService = Sponge.getServiceManager().provideUnchecked(UserStorageService.class);
         Optional<User> user = userStorageService.get(id);
@@ -179,10 +279,24 @@ public class GuildManager {
         }
     }
 
+    /**
+     * Gets player guild or throw.
+     *
+     * @param source the source
+     * @return the player guild or throw
+     * @throws GuildCommandException the guild command exception
+     */
     public Guild getPlayerGuildOrThrow(Player source) throws GuildCommandException {
         return this.getPlayerGuild(source).orElseThrow(GuildCommandException::notInGuild);
     }
 
+    /**
+     * Gets guild.
+     *
+     * @param name the name
+     * @return the guild
+     * @throws GuildCommandException the guild command exception
+     */
     public Guild getGuild(String name) throws GuildCommandException {
         Optional<Guild> guild = guildService.getGuild(name);
         if (guild.isPresent()) {
@@ -192,14 +306,32 @@ public class GuildManager {
         }
     }
 
+    /**
+     * Gets guilds.
+     *
+     * @return the guilds
+     */
     public Map<UUID, Guild> getGuilds() {
         return guildService.getGuilds();
     }
 
+    /**
+     * Gets guild members.
+     *
+     * @param guild the guild
+     * @return the guild members
+     */
     public Set<GuildMember> getGuildMembers(Guild guild) {
         return guild.getMembers();
     }
 
+    /**
+     * Transfer guild master.
+     *
+     * @param source the source
+     * @param name   the name
+     * @throws GuildCommandException the guild command exception
+     */
     public void transferGuildMaster(Player source, String name) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
         Player target = RachamonGuildsUtil.getPlayerFromUsernameOrThrow(name);
@@ -219,6 +351,12 @@ public class GuildManager {
 
     }
 
+    /**
+     * Leave guild.
+     *
+     * @param player the player
+     * @throws GuildCommandException the guild command exception
+     */
     public void leaveGuild(Player player) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(player);
 
@@ -234,6 +372,13 @@ public class GuildManager {
 
     }
 
+    /**
+     * Kick.
+     *
+     * @param source the source
+     * @param name   the name
+     * @throws GuildCommandException the guild command exception
+     */
     public void kick(Player source, String name) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
         Player target = RachamonGuildsUtil.getPlayerFromUsernameOrThrow(name);
@@ -255,6 +400,12 @@ public class GuildManager {
         plugin.getGuildMessagingManager().sendLeaveGuildMessage(guild, target.getName());
     }
 
+    /**
+     * Remove guild member.
+     *
+     * @param guild  the guild
+     * @param target the target
+     */
     public void removeGuildMember(Guild guild, Player target) {
         Optional<GuildMember> member = this.guildService.getGuildMember(guild, target.getUniqueId());
         if (!member.isPresent()) {
@@ -265,6 +416,13 @@ public class GuildManager {
         this.guildService.removeMember(guild, member.get().getUuid());
     }
 
+    /**
+     * Invite.
+     *
+     * @param source the source
+     * @param name   the name
+     * @throws GuildCommandException the guild command exception
+     */
     public void invite(Player source, String name) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
         Player player = RachamonGuildsUtil.getPlayerFromUsernameOrThrow(name);
@@ -284,6 +442,13 @@ public class GuildManager {
         this.invite(guild, source, player);
     }
 
+    /**
+     * Invite.
+     *
+     * @param guild  the guild
+     * @param master the master
+     * @param source the source
+     */
     public void invite(Guild guild, Player master, Player source) {
         LanguageConfig language = plugin.getConfig().getLanguage();
         ChatQuestion question = ChatQuestion.of(RachamonGuildsUtil.toText(language.getGeneralCategory().getInvitePlayerToGuild().replaceAll("\\{guild-master}", master.getName()).replaceAll("\\{guild-name}", guild.getName()))).addAnswer(ChatQuestionAnswer.of(RachamonGuildsUtil.toText(language.getQuestionCategory().getAcceptButton()), target -> {
@@ -306,11 +471,24 @@ public class GuildManager {
         plugin.getGuildMessagingManager().sendGuildInfo(guild, RachamonGuildsUtil.toText(language.getGeneralCategory().getInvitedPlayerToGuild().replaceAll("\\{target}", source.getName())));
     }
 
+    /**
+     * Add member to guild.
+     *
+     * @param guild  the guild
+     * @param source the source
+     */
     public void addMemberToGuild(Guild guild, User source) {
         this.guildService.addMember(guild, new GuildMember(source.getUniqueId(), new Date(), new Date()));
         plugin.getGuildMessagingManager().sendJoinGuildMessage(guild, source.getName());
     }
 
+    /**
+     * Remove member from guild.
+     *
+     * @param guild  the guild
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void removeMemberFromGuild(Guild guild, User source) throws GuildCommandException {
 
         if (this.isPlayerGuildMaster(source.getUniqueId(), guild)) {
@@ -321,6 +499,12 @@ public class GuildManager {
         plugin.getGuildMessagingManager().sendLeaveGuildMessage(guild, source.getName());
     }
 
+    /**
+     * Sets home.
+     *
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void setHome(Player source) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
 
@@ -333,6 +517,13 @@ public class GuildManager {
 
     }
 
+    /**
+     * Sets name.
+     *
+     * @param source the source
+     * @param name   the name
+     * @throws GuildCommandException the guild command exception
+     */
     public void setName(Player source, String name) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
         MainConfig config = plugin.getConfig().getRoot();
@@ -361,6 +552,13 @@ public class GuildManager {
         plugin.getGuildMessagingManager().response(source, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandNameSuccess().replaceAll("\\{name}", name)));
     }
 
+    /**
+     * Sets prefix.
+     *
+     * @param source the source
+     * @param name   the name
+     * @throws GuildCommandException the guild command exception
+     */
     public void setPrefix(Player source, String name) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
 
@@ -386,6 +584,12 @@ public class GuildManager {
         plugin.getGuildMessagingManager().response(source, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandPrefixSuccess().replaceAll("\\{prefix}", name)));
     }
 
+    /**
+     * Home.
+     *
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void home(Player source) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
         String[] location = guild.getHome().split(":");
@@ -403,6 +607,13 @@ public class GuildManager {
 
     }
 
+    /**
+     * Guild chat.
+     *
+     * @param source  the source
+     * @param message the message
+     * @throws GuildCommandException the guild command exception
+     */
     public void guildChat(Player source, String message) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
 
@@ -411,6 +622,13 @@ public class GuildManager {
         Sponge.getServer().getOnlinePlayers().stream().filter(player -> player.hasPermission("rachamonguilds.chat.spy") && guild.hasMember(player.getUniqueId())).forEach(player -> player.sendMessage(RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getGuildChatFormat().replaceAll("\\{member}", source.getName()).replaceAll("\\{guild-name}", guild.getName()) + message)));
     }
 
+    /**
+     * Sets motd.
+     *
+     * @param source  the source
+     * @param message the message
+     * @throws GuildCommandException the guild command exception
+     */
     public void setMotd(Player source, String message) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
 
@@ -424,6 +642,12 @@ public class GuildManager {
 
     }
 
+    /**
+     * Show motd.
+     *
+     * @param source the source
+     * @throws GuildCommandException the guild command exception
+     */
     public void showMotd(Player source) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
 
@@ -431,6 +655,13 @@ public class GuildManager {
 
     }
 
+    /**
+     * Sets last join.
+     *
+     * @param source   the source
+     * @param lastJoin the last join
+     * @throws GuildCommandException the guild command exception
+     */
     public void setLastJoin(Player source, Date lastJoin) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
         this.guildService.setMemberLastJoin(guild, source.getUniqueId(), lastJoin);
