@@ -5,6 +5,7 @@ import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.abstracts.AbstractMessagingManager;
 import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 
 public class GuildMessagingManager extends AbstractMessagingManager {
@@ -18,7 +19,7 @@ public class GuildMessagingManager extends AbstractMessagingManager {
         }
     }
 
-    public void response(Player source, Object... messages) {
+    public void response(CommandSource source, Object... messages) {
         this.info(source, messages);
     }
 
@@ -28,11 +29,11 @@ public class GuildMessagingManager extends AbstractMessagingManager {
         }
     }
 
-    public void sendLeaveGuildMessage(Guild guild, Player player) {
-        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getMemberLeaveGuild().replaceAll("\\{target}", player.getName())));
+    public void sendLeaveGuildMessage(Guild guild, String name) {
+        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getMemberLeaveGuild().replaceAll("\\{target}", name)));
     }
 
-    public void sendJoinGuildMessage(Guild guild, Player player) {
-        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getMemberJoinGuild().replaceAll("\\{target}", player.getName())));
+    public void sendJoinGuildMessage(Guild guild, String name) {
+        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getMemberJoinGuild().replaceAll("\\{target}", name)));
     }
 }

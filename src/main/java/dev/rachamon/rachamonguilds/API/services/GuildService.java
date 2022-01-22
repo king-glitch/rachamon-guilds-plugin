@@ -6,7 +6,6 @@ import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.entities.GuildMember;
 import dev.rachamon.rachamonguilds.managers.guild.GuildDatabaseManager;
 import org.spongepowered.api.Sponge;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
@@ -37,9 +36,6 @@ public final class GuildService {
         return false;
     }
 
-    public Collection<Guild> getGuildCollection() {
-        return this.guilds.values();
-    }
 
     public Optional<Guild> getGuild(UUID uuid) {
         return Optional.ofNullable(guilds.get(uuid));
@@ -83,14 +79,11 @@ public final class GuildService {
     }
 
     public Collection<GuildMember> getGuildMembers(Guild guild) {
-        return guild.getMembers()
-                .stream()
-                .filter(member -> Sponge.getServer().getPlayer(member.getUuid()).isPresent())
-                .collect(Collectors.toSet());
+        return guild.getMembers().stream().filter(member -> Sponge.getServer().getPlayer(member.getUuid()).isPresent()).collect(Collectors.toSet());
     }
 
-    public void removeMember(Guild guild, GuildMember member) {
-        guild.removeMember(member.getUniqueId());
+    public void removeMember(Guild guild, UUID uuid) {
+        guild.removeMember(uuid);
         this.save();
     }
 

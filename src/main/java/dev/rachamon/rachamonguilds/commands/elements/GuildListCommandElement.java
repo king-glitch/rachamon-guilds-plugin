@@ -2,26 +2,20 @@ package dev.rachamon.rachamonguilds.commands.elements;
 
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.entities.Guild;
-import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.ArgumentParseException;
 import org.spongepowered.api.command.args.CommandArgs;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
-import org.spongepowered.api.command.source.ConsoleSource;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.text.Text;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class GuildMemberCommandElement extends CommandElement {
-    public GuildMemberCommandElement(@Nullable Text key) {
+public class GuildListCommandElement extends CommandElement {
+    public GuildListCommandElement(@Nullable Text key) {
         super(key);
     }
 
@@ -34,8 +28,7 @@ public class GuildMemberCommandElement extends CommandElement {
     @Nonnull
     @Override
     public List<String> complete(@Nonnull CommandSource source, @Nonnull CommandArgs args, @Nonnull CommandContext context) {
-        if (source instanceof ConsoleSource) return new ArrayList<>();
-        Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild((Player) source);
-        return guild.map(value -> RachamonGuilds.getInstance().getGuildManager().getGuildMembers(value).stream().map(member -> RachamonGuildsUtil.getPlayerFromUuid(member.getUniqueId())).filter(Optional::isPresent).map(Optional::get).map(User::getName).collect(Collectors.toList())).orElse(new ArrayList<>());
+        return RachamonGuilds.getInstance().getGuildManager().getGuilds().values().stream().map(Guild::getName).collect(Collectors.toList());
+
     }
 }

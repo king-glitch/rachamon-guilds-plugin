@@ -5,7 +5,6 @@ import dev.rachamon.rachamonguilds.RachamonGuildsModule;
 import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.events.RachamonGuildsReloadEvent;
 import dev.rachamon.rachamonguilds.api.exceptions.AnnotatedCommandException;
-import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.commands.GuildCommand;
 import dev.rachamon.rachamonguilds.configs.RachamonGuildsConfig;
 import dev.rachamon.rachamonguilds.database.GuildDatabase;
@@ -65,8 +64,8 @@ public class GuildPluginManager {
 
         try {
             this.plugin.getCommandService().register(new GuildCommand(), this.plugin);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         Sponge.getEventManager().post(new RachamonGuildsReloadEvent());
@@ -81,12 +80,14 @@ public class GuildPluginManager {
                     .execute(() -> {
                         Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(source);
                         if (!guild.isPresent()) return;
+                        if (guild.get().getMotd() == null) return;
                         if (guild.get().getMotd().isEmpty()) return;
                         plugin.getGuildMessagingManager().sendGuildInfo(guild.get(), RachamonGuildsUtil.toText(guild.get().getMotd()));
                     })
                     .delay(2, TimeUnit.SECONDS)
                     .submit(plugin);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -95,7 +96,8 @@ public class GuildPluginManager {
         if (!guild.isPresent()) return;
         try {
             plugin.getGuildManager().setLastJoin(source, new Date());
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

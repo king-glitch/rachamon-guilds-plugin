@@ -13,6 +13,7 @@ import dev.rachamon.rachamonguilds.configs.LanguageConfig;
 import dev.rachamon.rachamonguilds.configs.MainConfig;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.service.pagination.PaginationList;
@@ -37,6 +38,10 @@ public class GuildManager {
 
     public boolean isPlayerGuildMaster(Player player, Guild guild) {
         return player.getUniqueId().equals(guild.getMaster());
+    }
+
+    public boolean isPlayerGuildMaster(UUID uuid, Guild guild) {
+        return uuid.equals(guild.getMaster());
     }
 
     public boolean isPlayerInGuild(Player player) {
@@ -77,6 +82,18 @@ public class GuildManager {
             throw GuildCommandException.notGuildMaster();
         }
 
+        this.disbandGuild(guild, source, language);
+
+    }
+
+    public void disband(Guild guild, CommandSource source) throws GuildCommandException {
+
+        LanguageConfig language = plugin.getConfig().getLanguage();
+        this.disbandGuild(guild, source, language);
+
+    }
+
+    private void disbandGuild(Guild guild, CommandSource source, LanguageConfig language) {
         boolean isDelete = this.guildService.removeGuild(guild);
 
         if (!isDelete) {
@@ -86,13 +103,12 @@ public class GuildManager {
             if (!plugin.getConfig().getRoot().getGeneralCategorySetting().isSendGlobalMessageOnGuildDisbanded()) return;
             RachamonGuildsUtil.broadcast(language.getCommandCategory().getCommandDisbandBroadcast().replaceAll("\\{guild-name}", guild.getName()));
         }
-
     }
 
     public Optional<Guild> getPlayerGuild(Player source) {
 
         for (Guild guild : guildService.getGuildList()) {
-            if (!guild.hasMember(source.getUniqueId())) continue;
+            if (guild.hasMember(source.getUniqueId())) continue;
             return Optional.of(guild);
         }
 
@@ -141,10 +157,8 @@ public class GuildManager {
         AtomicInteger i = new AtomicInteger(1);
         this.getGuildMembers(guild).forEach((member) -> {
             Optional<User> user = RachamonGuildsUtil.getUserFromUuid(member.getUuid());
-            Optional<Player> player = RachamonGuildsUtil.getPlayerFromUuid(member.getUuid());
             if (!user.isPresent()) return;
-
-            String name = user.get().isOnline() ? this.isPlayerGuildMaster(player.get(), guild) ? "&6&l" + player.get().getName() + "&r" : "&a&l" + player.get().getName() + "&r" : "&c&l" + player.get().getName() + "&r";
+            String name = user.get().isOnline() ? this.isPlayerGuildMaster(user.get().getUniqueId(), guild) ? "&6&l" + user.get().getName() + "&r" : "&a&l" + user.get().getName() + "&r" : "&c&l" + user.get().getName() + "&r";
             String text = plugin.getConfig().getLanguage().getCommandCategory().getCommandInfoMemberListPrint().replaceAll("\\{index}", String.valueOf(i.get())).replaceAll("\\{first-join}", member.getFirstJoin().toString()).replaceAll("\\{name}", name);
 
             contents.add(RachamonGuildsUtil.toText(text));
@@ -178,7 +192,7 @@ public class GuildManager {
         }
     }
 
-    public Map<UUID, Guild> getGuilds() throws GuildCommandException {
+    public Map<UUID, Guild> getGuilds() {
         return guildService.getGuilds();
     }
 
@@ -216,7 +230,7 @@ public class GuildManager {
         this.removeGuildMember(guild, player);
 
         plugin.getGuildMessagingManager().response(player, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandLeaveGuildSuccess()));
-        plugin.getGuildMessagingManager().sendLeaveGuildMessage(guild, player);
+        plugin.getGuildMessagingManager().sendLeaveGuildMessage(guild, player.getName());
 
     }
 
@@ -238,7 +252,7 @@ public class GuildManager {
         this.removeGuildMember(guild, target);
 
         plugin.getGuildMessagingManager().response(source, RachamonGuildsUtil.toText(plugin.getConfig().getLanguage().getCommandCategory().getCommandKickSuccess().replaceAll("\\{target}", target.getName())));
-        plugin.getGuildMessagingManager().sendLeaveGuildMessage(guild, target);
+        plugin.getGuildMessagingManager().sendLeaveGuildMessage(guild, target.getName());
     }
 
     public void removeGuildMember(Guild guild, Player target) {
@@ -248,7 +262,7 @@ public class GuildManager {
             return;
         }
 
-        this.guildService.removeMember(guild, member.get());
+        this.guildService.removeMember(guild, member.get().getUuid());
     }
 
     public void invite(Player source, String name) throws GuildCommandException {
@@ -276,7 +290,7 @@ public class GuildManager {
             plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteAccepted().replaceAll("\\{target}", source.getName())));
             plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteAcceptedTarget().replaceAll("\\{guild-name}", guild.getName())));
             this.guildService.addMember(guild, new GuildMember(source.getUniqueId(), new Date(), new Date()));
-            plugin.getGuildMessagingManager().sendJoinGuildMessage(guild, source);
+            plugin.getGuildMessagingManager().sendJoinGuildMessage(guild, source.getName());
         })).addAnswer(ChatQuestionAnswer.of(RachamonGuildsUtil.toText(language.getQuestionCategory().getDeclinedButton()), target -> {
             plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteDeclined().replaceAll("\\{target}", source.getName())));
             plugin.getGuildMessagingManager().response(target, RachamonGuildsUtil.toText(language.getGeneralCategory().getInviteDeclinedTarget().replaceAll("\\{guild-name}", guild.getName())));
@@ -290,6 +304,21 @@ public class GuildManager {
         question.pollChat(source);
 
         plugin.getGuildMessagingManager().sendGuildInfo(guild, RachamonGuildsUtil.toText(language.getGeneralCategory().getInvitedPlayerToGuild().replaceAll("\\{target}", source.getName())));
+    }
+
+    public void addMemberToGuild(Guild guild, User source) {
+        this.guildService.addMember(guild, new GuildMember(source.getUniqueId(), new Date(), new Date()));
+        plugin.getGuildMessagingManager().sendJoinGuildMessage(guild, source.getName());
+    }
+
+    public void removeMemberFromGuild(Guild guild, User source) throws GuildCommandException {
+
+        if (this.isPlayerGuildMaster(source.getUniqueId(), guild)) {
+            throw new GuildCommandException("You can't remove guild master, please disband a guild");
+        }
+
+        this.guildService.removeMember(guild, source.getUniqueId());
+        plugin.getGuildMessagingManager().sendLeaveGuildMessage(guild, source.getName());
     }
 
     public void setHome(Player source) throws GuildCommandException {
@@ -377,30 +406,9 @@ public class GuildManager {
     public void guildChat(Player source, String message) throws GuildCommandException {
         Guild guild = this.getPlayerGuildOrThrow(source);
 
-        RachamonGuilds.getInstance()
-                .getGuildMessagingManager()
-                .sendGuildInfo(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance()
-                        .getConfig()
-                        .getLanguage()
-                        .getGeneralCategory()
-                        .getGuildChatFormat()
-                        .replaceAll("\\{member}", source.getName()) + message)
-                );
+        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildInfo(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getGuildChatFormat().replaceAll("\\{member}", source.getName()) + message));
 
-        Sponge.getServer().getOnlinePlayers()
-                .stream()
-                .filter(player -> player.hasPermission("rachamonguilds.chat.spy") && !guild.hasMember(player.getUniqueId()))
-                .forEach(player -> player.sendMessage(RachamonGuildsUtil.toText(RachamonGuilds.getInstance()
-                        .getConfig()
-                        .getLanguage()
-                        .getGeneralCategory()
-                        .getGuildChatFormat()
-                        .replaceAll("\\{member}", source.getName())
-                        .replaceAll("\\{guild-name}", guild.getName())
-                        + message)
-
-                ));
-
+        Sponge.getServer().getOnlinePlayers().stream().filter(player -> player.hasPermission("rachamonguilds.chat.spy") && guild.hasMember(player.getUniqueId())).forEach(player -> player.sendMessage(RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getGuildChatFormat().replaceAll("\\{member}", source.getName()).replaceAll("\\{guild-name}", guild.getName()) + message)));
     }
 
     public void setMotd(Player source, String message) throws GuildCommandException {

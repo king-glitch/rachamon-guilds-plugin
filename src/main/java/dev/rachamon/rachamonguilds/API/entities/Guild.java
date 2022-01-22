@@ -1,6 +1,5 @@
 package dev.rachamon.rachamonguilds.api.entities;
 
-import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.identifiable.ISpongeIdentifiable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -98,16 +97,14 @@ public class Guild implements ISpongeIdentifiable {
     }
 
     public void removeMember(UUID uuid) {
-        RachamonGuilds.getInstance().getLogger().debug(this.members.toString());
         this.setMembers(this.members.stream()
                 .filter(member -> !member.getUuid().equals(uuid))
                 .collect(Collectors.toSet()));
-        RachamonGuilds.getInstance().getLogger().debug(this.members.toString());
     }
 
     public boolean hasMember(UUID uuid) {
         Optional<GuildMember> member = this.members.stream().filter(m -> m.getUuid().equals(uuid)).findFirst();
-        return member.isPresent();
+        return !member.isPresent();
     }
 
     public void setMembers(Set<GuildMember> members) {

@@ -37,6 +37,11 @@ public class RachamonGuildsUtil {
         return Sponge.getServer().getPlayer(uuid).orElseThrow(GuildCommandException::notOnlineOrExists);
     }
 
+    public static User getUserFromNameOrThrow(String name) throws GuildCommandException {
+        Optional<UserStorageService> userStorage = Sponge.getServiceManager().provide(UserStorageService.class);
+        return userStorage.flatMap(storage -> storage.get(name)).orElseThrow(GuildCommandException::notOnlineOrExists);
+    }
+
     public static Player getPlayerFromUsernameOrThrow(String string) throws GuildCommandException {
         return Sponge.getServer().getPlayer(string).orElseThrow(GuildCommandException::notOnlineOrExists);
     }

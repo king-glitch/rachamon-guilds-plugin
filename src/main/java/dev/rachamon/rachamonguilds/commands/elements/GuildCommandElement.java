@@ -28,13 +28,7 @@ public class GuildCommandElement extends CommandElement {
     @Nonnull
     @Override
     public List<String> complete(@Nonnull CommandSource source, @Nonnull CommandArgs args, @Nonnull CommandContext context) {
-        try {
-            return RachamonGuilds.getInstance().getGuildManager().getGuilds().values().stream().map(Guild::getName).collect(Collectors.toList());
-        } catch (GuildCommandException ignored) {
-
-        }
-
-        return new ArrayList<String>();
+        return RachamonGuilds.getInstance().getGuildManager().getGuilds().values().stream().map(Guild::getName).collect(Collectors.toList());
     }
 
     @Nonnull

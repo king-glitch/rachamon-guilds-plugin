@@ -40,7 +40,6 @@ public class GuildNotInGuildCommandElements extends CommandElement {
         Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild((Player) source);
         if (!guild.isPresent()) return new ArrayList<>();
         List<UUID> onlinePlayers = Sponge.getServer().getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toList());
-
         return onlinePlayers.stream().filter(o -> !guild.get().getMembersUuid().contains(o)).map(RachamonGuildsUtil::getPlayerFromUuid).filter(Optional::isPresent).map(Optional::get).map(User::getName).collect(Collectors.toList());
     }
 }

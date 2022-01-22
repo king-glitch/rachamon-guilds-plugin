@@ -5,6 +5,7 @@ import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.api.interfaces.command.*;
 import dev.rachamon.rachamonguilds.commands.subcommands.*;
+import dev.rachamon.rachamonguilds.commands.subcommands.admin.GuildAdminCommand;
 import dev.rachamon.rachamonguilds.commands.subcommands.admin.GuildAdminReloadCommand;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -28,7 +29,8 @@ import javax.annotation.Nonnull;
         GuildPrefixCommand.class,
         GuildNameCommand.class,
         GuildMotdCommand.class,
-        GuildSetMotdCommand.class
+        GuildSetMotdCommand.class,
+        GuildAdminCommand.class
 })
 @ICommandAliases({"guild", "guilds", "g"})
 @ICommandHelpText(title = "Main Guild Help", command = "help")
