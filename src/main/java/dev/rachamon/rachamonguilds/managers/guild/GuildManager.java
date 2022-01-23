@@ -73,16 +73,6 @@ public class GuildManager {
     }
 
     /**
-     * Is player in guild or send error.
-     *
-     * @param player the player
-     * @throws GuildCommandException the guild command exception
-     */
-    public void isPlayerInGuildOrSendError(Player player) throws GuildCommandException {
-        this.getPlayerGuild(player).orElseThrow(GuildCommandException::notInGuild);
-    }
-
-    /**
      * Is player in guild boolean.
      *
      * @param guild  the guild
@@ -141,9 +131,8 @@ public class GuildManager {
      *
      * @param guild  the guild
      * @param source the source
-     * @throws GuildCommandException the guild command exception
      */
-    public void disband(Guild guild, CommandSource source) throws GuildCommandException {
+    public void disband(Guild guild, CommandSource source) {
 
         LanguageConfig language = plugin.getConfig().getLanguage();
         this.disbandGuild(guild, source, language);
@@ -176,16 +165,6 @@ public class GuildManager {
         }
 
         return Optional.empty();
-    }
-
-    /**
-     * Gets online guild members.
-     *
-     * @param guild the guild
-     * @return the online guild members
-     */
-    public Set<GuildMember> getOnlineGuildMembers(Guild guild) {
-        return guild.getMembers().stream().filter(member -> Sponge.getServer().getPlayer(member.getUuid()).isPresent()).collect(Collectors.toSet());
     }
 
     /**
@@ -619,7 +598,7 @@ public class GuildManager {
 
         RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildInfo(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getGuildChatFormat().replaceAll("\\{member}", source.getName()) + message));
 
-        Sponge.getServer().getOnlinePlayers().stream().filter(player -> player.hasPermission("rachamonguilds.chat.spy") && guild.hasMember(player.getUniqueId())).forEach(player -> player.sendMessage(RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getGuildChatFormat().replaceAll("\\{member}", source.getName()).replaceAll("\\{guild-name}", guild.getName()) + message)));
+        Sponge.getServer().getOnlinePlayers().stream().filter(player -> player.hasPermission("rachamonguilds.chat.spy") && guild.hasMember(player.getUniqueId())).forEach(player -> player.sendMessage(RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getGuildChatSpyFormat().replaceAll("\\{member}", source.getName()).replaceAll("\\{guild-name}", guild.getName()) + message)));
     }
 
     /**
