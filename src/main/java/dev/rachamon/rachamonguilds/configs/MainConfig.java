@@ -10,10 +10,10 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class MainConfig {
 
     @Setting(value = "general", comment = "General Settings")
-    private final GeneralCategorySetting mainCategorySetting = new GeneralCategorySetting();
+    protected GeneralCategorySetting mainCategorySetting = new GeneralCategorySetting();
 
     @Setting(value = "guild", comment = "Guild Settings")
-    private final GuildCategorySetting guildCategorySetting = new GuildCategorySetting();
+    protected GuildCategorySetting guildCategorySetting = new GuildCategorySetting();
 
     /**
      * The type General category setting.
@@ -21,13 +21,13 @@ public class MainConfig {
     @ConfigSerializable
     public static class GeneralCategorySetting {
         @Setting(comment = "Send message to all online players on guild created? [default: true]", value = "is-send-global-message-on-guild-created")
-        private final boolean isSendGlobalMessageOnGuildCreated = true;
+        protected boolean isSendGlobalMessageOnGuildCreated = true;
 
         @Setting(comment = "Send message to all online players when guild disbanded? [default: true]", value = "is-send-global-message-on-guild-created")
-        private final boolean isSendGlobalMessageOnGuildDisbanded = true;
+        protected boolean isSendGlobalMessageOnGuildDisbanded = true;
 
         @Setting(comment = "show debug messages [default: false]", value = "debug")
-        private final boolean isDebug = false;
+        protected boolean isDebug = false;
 
         /**
          * Is send global message on guild created boolean.
@@ -64,22 +64,22 @@ public class MainConfig {
     public static class GuildCategorySetting {
 
         @Setting(comment = "A regex valid guild name [default: [a-zA-Z]]", value = "valid-name-regex")
-        private final String validNameRegex = "[a-zA-Z]*";
+        protected String validNameRegex = "[a-zA-Z]*";
 
         @Setting(comment = "Min guild name length [default: 4]", value = "min-guild-name-length")
-        private final int minGuildNameLength = 4;
+        protected int minGuildNameLength = 4;
 
         @Setting(comment = "Max guild name length [default: 16]", value = "max-guild-name-length")
-        private final int maxGuildNameLength = 16;
+        protected int maxGuildNameLength = 16;
 
         @Setting(comment = "Min guild displayname length [default: 4]", value = "min-guild-displayname-length")
-        private final int minGuildDisplayNameLength = 4;
+        protected int minGuildDisplayNameLength = 4;
 
         @Setting(comment = "Max guild displayname length [default: 16]", value = "max-guild-displayname-length")
-        private final int maxGuildDisplayNameLength = 16;
+        protected int maxGuildDisplayNameLength = 16;
 
         @Setting(comment = "Max Guild displayname includes color? [default: true]", value = "guild-displayname-include-color")
-        private final boolean guildDisplayNameIncludeColor = true;
+        protected boolean guildDisplayNameIncludeColor = true;
 
         /**
          * Gets min guild display name length.
