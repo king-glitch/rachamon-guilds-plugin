@@ -1,4 +1,4 @@
-package dev.rachamon.yanamibot.api.entities;
+package dev.rachamon.rachamonguilds.api.entities;
 
 import org.spongepowered.api.command.spec.CommandSpec;
 
