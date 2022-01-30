@@ -15,7 +15,8 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import javax.annotation.Nonnull;
-import java.util.regex.Pattern;
+import java.util.Optional;
+
 
 /**
  * The type Guild create command.
@@ -27,33 +28,33 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
 
     @Override
     public CommandElement[] getArguments() {
-        return new CommandElement[]{
-                GenericArguments.string(Text.of("name")),
-                GenericArguments.string(Text.of("displayName")),
-        };
+        return new CommandElement[]{GenericArguments.string(Text.of("name")), GenericArguments.string(Text.of("displayName")),};
     }
 
     @Nonnull
     @Override
     public CommandResult execute(@Nonnull Player source, @Nonnull CommandContext args) throws GuildCommandException {
 
-        String name = args.<String>getOne("name").get();
-        String displayName = args.<String>getOne("displayName").get();
+        Optional<String> name = args.<String>getOne("name");
+        Optional<String> displayName = args.<String>getOne("displayName");
+
+        if (!name.isPresent() || !displayName.isPresent()) return CommandResult.empty();
+
         MainConfig config = RachamonGuilds.getInstance().getConfig().getRoot();
         LanguageConfig language = RachamonGuilds.getInstance().getConfig().getLanguage();
 
         int minNameLength = config.getGuildCategorySetting().getMinGuildNameLength();
         int maxNameLength = config.getGuildCategorySetting().getMaxGuildNameLength();
 
-        if (name.length() < minNameLength) {
+        if (name.get().length() < minNameLength) {
             throw new GuildCommandException(language.getCommandCategory().getCommandCreatedNameTooShort());
         }
 
-        if (name.length() > maxNameLength) {
+        if (name.get().length() > maxNameLength) {
             throw new GuildCommandException(language.getCommandCategory().getCommandCreatedNameTooLong());
         }
 
-        if (!name.matches(config.getGuildCategorySetting().getValidNameRegex())) {
+        if (!name.get().matches(config.getGuildCategorySetting().getValidNameRegex())) {
             throw new GuildCommandException(language.getCommandCategory().getCommandInvalidGuildName());
         }
 
@@ -63,18 +64,12 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
         int maxDisplayNameLength = config.getGuildCategorySetting().getMaxGuildDisplayNameLength();
 
 
-        RachamonGuildsUtil.guildDisplayNameCheck(displayName, language, isGuildDisplayNameIncludeColor, minDisplayNameLength, maxDisplayNameLength);
-        if (!displayName.matches("[A-Za-z&0-9]*")) {
+        RachamonGuildsUtil.guildDisplayNameCheck(displayName.get(), language, isGuildDisplayNameIncludeColor, minDisplayNameLength, maxDisplayNameLength);
+        if (!displayName.get().matches("[A-Za-z&0-9]*")) {
             throw new GuildCommandException(language.getCommandCategory().getCommandInvalidGuildDisplayName());
         }
         // create guild
-        RachamonGuilds
-                .getInstance()
-                .getGuildManager().create(
-                        source,
-                        name,
-                        displayName
-                );
+        RachamonGuilds.getInstance().getGuildManager().create(source, name.get(), displayName.get());
 
         return CommandResult.success();
     }

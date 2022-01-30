@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 @ICommandPermission("rachamonguilds.command.admin.base")
 @ICommandDescription("guild admin base")
 @ICommandHelpText(title = "Main Guild Help", command = "help")
-@ICommandChildren({GuildAdminMemberCommand.class, GuildAdminReloadCommand.class, GuildAdminDisbandCommand.class})
+@ICommandChildren({GuildAdminMemberCommand.class, GuildAdminCreateCommand.class, GuildAdminReloadCommand.class, GuildAdminDisbandCommand.class})
 public class GuildAdminCommand implements ICommand {
     @Nonnull
     @Override

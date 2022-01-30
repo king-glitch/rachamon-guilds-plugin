@@ -66,6 +66,19 @@ public class PlaceholderAPIHookService {
     }
 
     /**
+     * Guild display name string.
+     *
+     * @param commandSource the command source
+     * @return the string
+     */
+    @Placeholder(id = "rachamonguilds-guild-size")
+    public String guildMemberSize(@Source CommandSource commandSource) {
+        Player player = (Player) commandSource;
+        Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(player);
+        return guild.map(value -> String.valueOf(value.getMembers().size())).orElse("0");
+    }
+
+    /**
      * Guild id string.
      *
      * @param commandSource the command source
@@ -97,7 +110,7 @@ public class PlaceholderAPIHookService {
      * @param commandSource the command source
      * @return the string
      */
-    @Placeholder(id = "rachamonguilds-master")
+    @Placeholder(id = "rachamonguilds-guild-master")
     public String guildMaster(@Source CommandSource commandSource) {
         Player player = (Player) commandSource;
         Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(player);
