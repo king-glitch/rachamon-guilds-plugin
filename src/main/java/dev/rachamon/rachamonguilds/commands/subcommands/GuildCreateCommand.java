@@ -1,9 +1,9 @@
 package dev.rachamon.rachamonguilds.commands.subcommands;
 
 
+import dev.rachamon.api.sponge.implement.command.*;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
-import dev.rachamon.rachamonguilds.api.interfaces.command.*;
 import dev.rachamon.rachamonguilds.configs.LanguageConfig;
 import dev.rachamon.rachamonguilds.configs.MainConfig;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
@@ -40,8 +40,8 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
 
         if (!name.isPresent() || !displayName.isPresent()) return CommandResult.empty();
 
-        MainConfig config = RachamonGuilds.getInstance().getConfig().getRoot();
-        LanguageConfig language = RachamonGuilds.getInstance().getConfig().getLanguage();
+        MainConfig config = RachamonGuilds.getInstance().getConfig();
+        LanguageConfig language = RachamonGuilds.getInstance().getLanguage();
 
         int minNameLength = config.getGuildCategorySetting().getMinGuildNameLength();
         int maxNameLength = config.getGuildCategorySetting().getMaxGuildNameLength();

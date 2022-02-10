@@ -2,16 +2,19 @@ package dev.rachamon.rachamonguilds;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
-import dev.rachamon.rachamonguilds.api.services.CommandService;
+import dev.rachamon.api.sponge.command.SpongeCommandService;
+import dev.rachamon.api.sponge.config.SpongeAPIConfigFactory;
+import dev.rachamon.api.sponge.implement.plugin.IRachamonPlugin;
+import dev.rachamon.api.sponge.util.LoggerUtil;
 import dev.rachamon.rachamonguilds.api.services.GuildService;
-import dev.rachamon.rachamonguilds.configs.RachamonGuildsConfig;
+import dev.rachamon.rachamonguilds.configs.LanguageConfig;
+import dev.rachamon.rachamonguilds.configs.MainConfig;
 import dev.rachamon.rachamonguilds.managers.guild.GuildManager;
 import dev.rachamon.rachamonguilds.managers.guild.GuildMessagingManager;
 import dev.rachamon.rachamonguilds.managers.plugin.GuildPluginManager;
-import dev.rachamon.rachamonguilds.utils.LoggerUtil;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsHelperUtil;
 import ninja.leaping.configurate.objectmapping.GuiceObjectMapperFactory;
+import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.entity.living.player.Player;
@@ -33,14 +36,15 @@ import java.nio.file.Path;
  * The type Rachamon guilds.
  */
 @Plugin(id = "rachamonguilds", name = "RachamonGuilds", description = "A simple guild plugin", authors = {"Rachamon"}, dependencies = {@Dependency(id = "placeholderapi", optional = true)})
-public class RachamonGuilds {
+public class RachamonGuilds implements IRachamonPlugin {
 
     private static RachamonGuilds instance;
     private static boolean isInitialized = false;
 
     private GuildPluginManager rachamonGuildsPluginManager;
     private Components components;
-    private RachamonGuildsConfig config;
+    private SpongeAPIConfigFactory<RachamonGuilds, MainConfig> config;
+    private SpongeAPIConfigFactory<RachamonGuilds, LanguageConfig> language;
     private LoggerUtil logger;
     private RachamonGuildsHelperUtil helperUtil;
 
@@ -173,6 +177,11 @@ public class RachamonGuilds {
         return this.logger;
     }
 
+    @Override
+    public void setLogger(LoggerUtil logger) {
+        this.logger = logger;
+    }
+
     /**
      * Gets is initialized.
      *
@@ -236,6 +245,16 @@ public class RachamonGuilds {
         return this.spongeInjector;
     }
 
+    @Override
+    public Game getGame() {
+        return null;
+    }
+
+    @Override
+    public Injector getBotInjector() {
+        return null;
+    }
+
     /**
      * Sets is initialized.
      *
@@ -255,24 +274,6 @@ public class RachamonGuilds {
     }
 
     /**
-     * Sets config.
-     *
-     * @param config the config
-     */
-    public void setConfig(RachamonGuildsConfig config) {
-        this.config = config;
-    }
-
-    /**
-     * Sets logger.
-     *
-     * @param logger the logger
-     */
-    public void setLogger(LoggerUtil logger) {
-        this.logger = logger;
-    }
-
-    /**
      * Sets guild injector.
      *
      * @param injector the injector
@@ -282,12 +283,52 @@ public class RachamonGuilds {
     }
 
     /**
+     * Sets language manager.
+     *
+     * @param language the language
+     */
+    public void setLanguageManager(SpongeAPIConfigFactory<RachamonGuilds, LanguageConfig> language) {
+        this.language = language;
+    }
+
+    public void setConfigManager(SpongeAPIConfigFactory<RachamonGuilds, MainConfig> config) {
+        this.config = config;
+    }
+
+    /**
+     * Sets main config.
+     *
+     * @param config the config
+     */
+    public void setMainConfig(MainConfig config) {
+        this.config.setClazz(config);
+    }
+
+    /**
+     * Sets language config.
+     *
+     * @param config the config
+     */
+    public void setLanguageConfig(LanguageConfig config) {
+        this.language.setClazz(config);
+    }
+
+    /**
+     * Gets language.
+     *
+     * @return the language
+     */
+    public LanguageConfig getLanguage() {
+        return language.getRoot();
+    }
+
+    /**
      * Gets config.
      *
      * @return the config
      */
-    public RachamonGuildsConfig getConfig() {
-        return this.config;
+    public MainConfig getConfig() {
+        return config.getRoot();
     }
 
     /**
@@ -322,8 +363,8 @@ public class RachamonGuilds {
      *
      * @return the command service
      */
-    public CommandService getCommandService() {
-        return CommandService.getInstance();
+    public SpongeCommandService getCommandService() {
+        return SpongeCommandService.getInstance();
     }
 
     /**

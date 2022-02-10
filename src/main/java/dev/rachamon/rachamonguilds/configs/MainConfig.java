@@ -9,9 +9,15 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class MainConfig {
 
+    /**
+     * The Main category setting.
+     */
     @Setting(value = "general", comment = "General Settings")
     protected GeneralCategorySetting mainCategorySetting = new GeneralCategorySetting();
 
+    /**
+     * The Guild category setting.
+     */
     @Setting(value = "guild", comment = "Guild Settings")
     protected GuildCategorySetting guildCategorySetting = new GuildCategorySetting();
 
@@ -20,12 +26,21 @@ public class MainConfig {
      */
     @ConfigSerializable
     public static class GeneralCategorySetting {
+        /**
+         * The Is send global message on guild created.
+         */
         @Setting(comment = "Send message to all online players on guild created? [default: true]", value = "is-send-global-message-on-guild-created")
         protected boolean isSendGlobalMessageOnGuildCreated = true;
 
+        /**
+         * The Is send global message on guild disbanded.
+         */
         @Setting(comment = "Send message to all online players when guild disbanded? [default: true]", value = "is-send-global-message-on-guild-created")
         protected boolean isSendGlobalMessageOnGuildDisbanded = true;
 
+        /**
+         * The Is debug.
+         */
         @Setting(comment = "show debug messages [default: false]", value = "debug")
         protected boolean isDebug = false;
 
@@ -63,21 +78,39 @@ public class MainConfig {
     @ConfigSerializable
     public static class GuildCategorySetting {
 
+        /**
+         * The Valid name regex.
+         */
         @Setting(comment = "A regex valid guild name [default: [a-zA-Z]]", value = "valid-name-regex")
         protected String validNameRegex = "[a-zA-Z]*";
 
+        /**
+         * The Min guild name length.
+         */
         @Setting(comment = "Min guild name length [default: 4]", value = "min-guild-name-length")
         protected int minGuildNameLength = 4;
 
+        /**
+         * The Max guild name length.
+         */
         @Setting(comment = "Max guild name length [default: 16]", value = "max-guild-name-length")
         protected int maxGuildNameLength = 16;
 
+        /**
+         * The Min guild display name length.
+         */
         @Setting(comment = "Min guild displayname length [default: 4]", value = "min-guild-displayname-length")
         protected int minGuildDisplayNameLength = 4;
 
+        /**
+         * The Max guild display name length.
+         */
         @Setting(comment = "Max guild displayname length [default: 16]", value = "max-guild-displayname-length")
         protected int maxGuildDisplayNameLength = 16;
 
+        /**
+         * The Guild display name include color.
+         */
         @Setting(comment = "Max Guild displayname includes color? [default: true]", value = "guild-displayname-include-color")
         protected boolean guildDisplayNameIncludeColor = true;
 

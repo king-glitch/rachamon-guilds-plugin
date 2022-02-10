@@ -1,12 +1,15 @@
 package dev.rachamon.rachamonguilds.managers.plugin;
 
+import dev.rachamon.api.sponge.config.SpongeAPIConfigFactory;
+import dev.rachamon.api.sponge.exception.AnnotatedCommandException;
+import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.RachamonGuildsModule;
 import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.events.RachamonGuildsReloadEvent;
-import dev.rachamon.rachamonguilds.api.exceptions.AnnotatedCommandException;
 import dev.rachamon.rachamonguilds.commands.GuildCommand;
-import dev.rachamon.rachamonguilds.configs.RachamonGuildsConfig;
+import dev.rachamon.rachamonguilds.configs.LanguageConfig;
+import dev.rachamon.rachamonguilds.configs.MainConfig;
 import dev.rachamon.rachamonguilds.database.GuildDatabase;
 import dev.rachamon.rachamonguilds.database.GuildDatabaseKeys;
 import dev.rachamon.rachamonguilds.hooks.PlaceholderAPIHookService;
@@ -77,7 +80,6 @@ public class GuildPluginManager {
     public void reload() throws IOException {
 
         this.plugin.getLogger().debug("Reloading Rachamon Guilds...");
-        this.plugin.setConfig(new RachamonGuildsConfig(this.plugin.getFactory()));
 
         try {
             this.plugin.getCommandService().register(new GuildCommand(), this.plugin);
@@ -89,6 +91,15 @@ public class GuildPluginManager {
 
         this.plugin.getLogger().debug("Rachamon Guilds reloaded");
 
+    }
+
+    private void configureConfigs() {
+        SpongeAPIConfigFactory<RachamonGuilds, MainConfig> config = new SpongeAPIConfigFactory<>(this.plugin, "main.conf");
+        SpongeAPIConfigFactory<RachamonGuilds, LanguageConfig> language = new SpongeAPIConfigFactory<>(this.plugin, "language.conf");
+        this.plugin.setConfigManager(config);
+        this.plugin.setLanguageManager(language);
+        this.plugin.setMainConfig(config.setHeader("Main Config").setClazz(new MainConfig()).setClazzType(MainConfig.class).build());
+        this.plugin.setLanguageConfig(language.setHeader("Language Config").setClazz(new LanguageConfig()).setClazzType(LanguageConfig.class).build());
     }
 
     /**
@@ -104,7 +115,7 @@ public class GuildPluginManager {
                         if (!guild.isPresent()) return;
                         if (guild.get().getMotd() == null) return;
                         if (guild.get().getMotd().isEmpty()) return;
-                        plugin.getGuildMessagingManager().sendGuildInfo(guild.get(), RachamonGuildsUtil.toText(guild.get().getMotd()));
+                        plugin.getGuildMessagingManager().sendGuildInfo(guild.get(), TextUtil.toText(guild.get().getMotd()));
                     })
                     .delay(2, TimeUnit.SECONDS)
                     .submit(plugin);
@@ -135,7 +146,7 @@ public class GuildPluginManager {
      */
     public void postInitialize() throws IOException {
 
-        this.plugin.setConfig(new RachamonGuildsConfig(this.plugin.getFactory()));
+        this.configureConfigs();
         this.plugin.setHelperUtil(new RachamonGuildsHelperUtil());
         this.plugin.getLogger().debug("Initializing Commands...");
 

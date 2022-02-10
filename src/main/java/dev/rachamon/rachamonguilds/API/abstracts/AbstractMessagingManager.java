@@ -1,7 +1,7 @@
 package dev.rachamon.rachamonguilds.api.abstracts;
 
+import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
-import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageReceiver;
 
@@ -20,9 +20,8 @@ public class AbstractMessagingManager {
      */
     public Text formatInfo(Object... messages) {
         if (prefix == null) {
-            prefix = RachamonGuildsUtil.toText(RachamonGuilds
+            prefix = TextUtil.toText(RachamonGuilds
                     .getInstance()
-                    .getConfig()
                     .getLanguage()
                     .getGeneralCategory()
                     .getPrefix() + "&a");
@@ -39,9 +38,8 @@ public class AbstractMessagingManager {
      */
     public Text formatError(Object... messages) {
         if (prefix == null) {
-            prefix = RachamonGuildsUtil.toText(RachamonGuilds
+            prefix = TextUtil.toText(RachamonGuilds
                     .getInstance()
-                    .getConfig()
                     .getLanguage()
                     .getGeneralCategory()
                     .getPrefix() + "&c");

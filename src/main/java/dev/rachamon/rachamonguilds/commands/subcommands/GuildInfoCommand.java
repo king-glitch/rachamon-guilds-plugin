@@ -3,7 +3,7 @@ package dev.rachamon.rachamonguilds.commands.subcommands;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.entities.Guild;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
-import dev.rachamon.rachamonguilds.api.interfaces.command.*;
+import dev.rachamon.api.sponge.implement.command.*;
 import dev.rachamon.rachamonguilds.commands.elements.GuildCommandElement;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;
@@ -34,7 +34,7 @@ public class GuildInfoCommand implements IPlayerCommand, IParameterizedCommand {
         if (!guildArg.isPresent()) {
             RachamonGuilds.getInstance().getGuildManager().printGuildMemberList(source);
         } else {
-            int minGuildNameLength = RachamonGuilds.getInstance().getConfig().getRoot().getGuildCategorySetting().getMinGuildNameLength();
+            int minGuildNameLength = RachamonGuilds.getInstance().getConfig().getGuildCategorySetting().getMinGuildNameLength();
             String guildName = guildArg.get();
 
             if (guildName.isEmpty() || guildName.length() < minGuildNameLength) return CommandResult.empty();

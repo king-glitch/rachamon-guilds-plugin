@@ -2,7 +2,7 @@ package dev.rachamon.rachamonguilds.commands.subcommands;
 
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
-import dev.rachamon.rachamonguilds.api.interfaces.command.*;
+import dev.rachamon.api.sponge.implement.command.*;
 import dev.rachamon.rachamonguilds.commands.elements.GuildMemberCommandElement;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.args.CommandContext;

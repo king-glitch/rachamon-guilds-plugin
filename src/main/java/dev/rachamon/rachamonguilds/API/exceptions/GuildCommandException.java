@@ -1,7 +1,7 @@
 package dev.rachamon.rachamonguilds.api.exceptions;
 
+import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
-import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.entity.living.player.User;
 
@@ -18,7 +18,7 @@ public class GuildCommandException extends CommandException {
      * @param message the message
      */
     public GuildCommandException(String message) {
-        super(plugin.getGuildMessagingManager().formatError(RachamonGuildsUtil.toText(message)));
+        super(plugin.getGuildMessagingManager().formatError(TextUtil.toText(message)));
     }
 
     /**
@@ -27,7 +27,7 @@ public class GuildCommandException extends CommandException {
      * @return the guild command exception
      */
     public static GuildCommandException notInGuild() {
-        return new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotInGuild());
+        return new GuildCommandException(plugin.getLanguage().getGeneralCategory().getUserNotInGuild());
     }
 
     /**
@@ -36,7 +36,7 @@ public class GuildCommandException extends CommandException {
      * @return the guild command exception
      */
     public static GuildCommandException notGuildMaster() {
-        return new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getNotGuildMaster());
+        return new GuildCommandException(plugin.getLanguage().getGeneralCategory().getNotGuildMaster());
     }
 
     /**
@@ -46,7 +46,7 @@ public class GuildCommandException extends CommandException {
      * @return the guild command exception
      */
     public static GuildCommandException targetNotInGuild(User player) {
-        return new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getTargetIsNotInGuild().replaceAll("\\{target}", player.getName()));
+        return new GuildCommandException(plugin.getLanguage().getGeneralCategory().getTargetIsNotInGuild().replaceAll("\\{target}", player.getName()));
     }
 
     /**
@@ -55,7 +55,7 @@ public class GuildCommandException extends CommandException {
      * @return the guild command exception
      */
     public static GuildCommandException notOnlineOrExists() {
-        return new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getUserNotFound());
+        return new GuildCommandException(plugin.getLanguage().getGeneralCategory().getUserNotFound());
     }
 
     /**
@@ -64,7 +64,7 @@ public class GuildCommandException extends CommandException {
      * @return the guild command exception
      */
     public static GuildCommandException somethingWentWrong() {
-        return new GuildCommandException(plugin.getConfig().getLanguage().getGeneralCategory().getSomethingWentWrong());
+        return new GuildCommandException(plugin.getLanguage().getGeneralCategory().getSomethingWentWrong());
     }
 
 

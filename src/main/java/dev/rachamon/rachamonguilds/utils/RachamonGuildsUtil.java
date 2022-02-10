@@ -1,5 +1,6 @@
 package dev.rachamon.rachamonguilds.utils;
 
+import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.exceptions.GuildCommandException;
 import dev.rachamon.rachamonguilds.configs.LanguageConfig;
@@ -17,15 +18,6 @@ import java.util.UUID;
  * The type Rachamon guilds util.
  */
 public class RachamonGuildsUtil {
-    /**
-     * To text text.
-     *
-     * @param string the string
-     * @return the text
-     */
-    public static Text toText(String string) {
-        return TextSerializers.FORMATTING_CODE.deserialize(string);
-    }
 
     /**
      * Broadcast.
@@ -34,7 +26,7 @@ public class RachamonGuildsUtil {
      */
     public static void broadcast(String string) {
         for (Player player : Sponge.getServer().getOnlinePlayers()) {
-            RachamonGuilds.getInstance().getGuildMessagingManager().response(player, RachamonGuildsUtil.toText(string));
+            RachamonGuilds.getInstance().getGuildMessagingManager().response(player, TextUtil.toText(string));
         }
     }
 

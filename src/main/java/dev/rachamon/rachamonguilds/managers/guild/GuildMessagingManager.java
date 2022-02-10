@@ -1,6 +1,7 @@
 package dev.rachamon.rachamonguilds.managers.guild;
 
 import com.google.inject.Inject;
+import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.api.abstracts.AbstractMessagingManager;
 import dev.rachamon.rachamonguilds.api.entities.Guild;
@@ -57,7 +58,7 @@ public class GuildMessagingManager extends AbstractMessagingManager {
      * @param name  the name
      */
     public void sendLeaveGuildMessage(Guild guild, String name) {
-        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getMemberLeaveGuild().replaceAll("\\{target}", name)));
+        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, TextUtil.toText(RachamonGuilds.getInstance().getLanguage().getGeneralCategory().getMemberLeaveGuild().replaceAll("\\{target}", name)));
     }
 
     /**
@@ -67,6 +68,6 @@ public class GuildMessagingManager extends AbstractMessagingManager {
      * @param name  the name
      */
     public void sendJoinGuildMessage(Guild guild, String name) {
-        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, RachamonGuildsUtil.toText(RachamonGuilds.getInstance().getConfig().getLanguage().getGeneralCategory().getMemberJoinGuild().replaceAll("\\{target}", name)));
+        RachamonGuilds.getInstance().getGuildMessagingManager().sendGuildError(guild, TextUtil.toText(RachamonGuilds.getInstance().getLanguage().getGeneralCategory().getMemberJoinGuild().replaceAll("\\{target}", name)));
     }
 }
