@@ -291,6 +291,11 @@ public class RachamonGuilds implements IRachamonPlugin {
         this.language = language;
     }
 
+    /**
+     * Sets config manager.
+     *
+     * @param config the config
+     */
     public void setConfigManager(SpongeAPIConfigFactory<RachamonGuilds, MainConfig> config) {
         this.config = config;
     }

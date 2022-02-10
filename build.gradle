@@ -3,10 +3,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-configurations {
-    shademe
-}
-
 group = 'dev.rachamon'
 version = '0.0.5-SNAPSHOT'
 
@@ -22,7 +18,7 @@ allprojects {
 dependencies {
     implementation 'com.github.king-glitch:sponge-plugin-api:30d66c4'
     compileOnly 'org.spongepowered:spongeapi:7.4.0'
-    compile files('./libs/PlaceholderAPI-4.5.1.jar')
+    compileOnly files('./libs/PlaceholderAPI-4.5.1.jar')
     annotationProcessor 'org.spongepowered:spongeapi:7.4.0'
 }
 
