@@ -26,6 +26,9 @@ public class MainConfig {
      */
     @ConfigSerializable
     public static class GeneralCategorySetting {
+
+        public GeneralCategorySetting() {}
+
         /**
          * The Is send global message on guild created.
          */
@@ -78,6 +81,7 @@ public class MainConfig {
     @ConfigSerializable
     public static class GuildCategorySetting {
 
+        public GuildCategorySetting() {}
         /**
          * The Valid name regex.
          */
