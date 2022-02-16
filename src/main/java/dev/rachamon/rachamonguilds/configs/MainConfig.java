@@ -27,6 +27,9 @@ public class MainConfig {
     @ConfigSerializable
     public static class GeneralCategorySetting {
 
+        /**
+         * Instantiates a new General category setting.
+         */
         public GeneralCategorySetting() {}
 
         /**
@@ -81,7 +84,11 @@ public class MainConfig {
     @ConfigSerializable
     public static class GuildCategorySetting {
 
+        /**
+         * Instantiates a new Guild category setting.
+         */
         public GuildCategorySetting() {}
+
         /**
          * The Valid name regex.
          */

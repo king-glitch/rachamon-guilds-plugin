@@ -15,7 +15,6 @@ import dev.rachamon.rachamonguilds.database.GuildDatabaseKeys;
 import dev.rachamon.rachamonguilds.hooks.PlaceholderAPIHookService;
 import dev.rachamon.rachamonguilds.managers.guild.GuildDatabaseManager;
 import dev.rachamon.rachamonguilds.utils.RachamonGuildsHelperUtil;
-import dev.rachamon.rachamonguilds.utils.RachamonGuildsUtil;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.entity.living.player.Player;
@@ -82,9 +81,9 @@ public class GuildPluginManager {
         this.plugin.getLogger().debug("Reloading Rachamon Guilds...");
 
         try {
+            this.configureConfigs();
             this.plugin.getCommandService().register(new GuildCommand(), this.plugin);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
 
         Sponge.getEventManager().post(new RachamonGuildsReloadEvent());

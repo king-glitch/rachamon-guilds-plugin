@@ -108,16 +108,16 @@ public class RachamonGuildsUtil {
     public static void guildDisplayNameCheck(String displayName, LanguageConfig language, boolean isGuildDisplayNameIncludeColor, int minDisplayNameLength, int maxDisplayNameLength) throws GuildCommandException {
         int displayNameLength;
         if (!isGuildDisplayNameIncludeColor) {
-            displayNameLength = displayName.length() - (displayName.replace("&", "").length() * 2);
+            displayNameLength = (displayName.length() - ((displayName.length() - displayName.replace("&", "").length()) * 2));
         } else {
             displayNameLength = displayName.length();
         }
 
-        if (displayNameLength < minDisplayNameLength) {
+        if (minDisplayNameLength > displayNameLength) {
             throw new GuildCommandException(language.getCommandCategory().getCommandCreatedDisplayNameTooShort());
         }
 
-        if (displayNameLength > maxDisplayNameLength) {
+        if (maxDisplayNameLength < displayNameLength) {
             throw new GuildCommandException(language.getCommandCategory().getCommandCreatedDisplayNameTooLong());
         }
     }

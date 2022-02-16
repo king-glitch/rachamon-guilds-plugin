@@ -437,7 +437,7 @@ public class LanguageConfig {
          * The Command invalid guild display name.
          */
         @Setting(comment = "guild display name too long", value = "command-invalid-guild-displayname")
-        protected String commandInvalidGuildDisplayName = "&c&lGuild name is invalid. available a-z, A-Z";
+        protected String commandInvalidGuildDisplayName = "&c&lGuild display name is invalid. available a-z, A-Z";
 
         /**
          * The Command created broadcast.
@@ -456,6 +456,12 @@ public class LanguageConfig {
          */
         @Setting(comment = "Created guild success message", value = "created-success")
         protected String commandCreatedSuccess = "&a&lThe guild has been created successfully";
+
+        /**
+         * The Command reload success.
+         */
+        @Setting(comment = "reload plugin success message", value = "created-success")
+        protected String commandReloadSuccess = "&a&lGuild plugin has been reloaded successfully";
 
         /**
          * The Command list guild print.
@@ -572,6 +578,15 @@ public class LanguageConfig {
          */
         public String getCommandCreatedBroadcast() {
             return commandCreatedBroadcast;
+        }
+
+        /**
+         * Gets command reload success.
+         *
+         * @return the command reload success
+         */
+        public String getCommandReloadSuccess() {
+            return commandReloadSuccess;
         }
 
         /**

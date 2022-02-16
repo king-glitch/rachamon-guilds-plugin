@@ -28,7 +28,10 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
 
     @Override
     public CommandElement[] getArguments() {
-        return new CommandElement[]{GenericArguments.string(Text.of("name")), GenericArguments.string(Text.of("displayName")),};
+        return new CommandElement[]{
+                GenericArguments.string(Text.of("name")),
+                GenericArguments.string(Text.of("displayName"))
+        };
     }
 
     @Nonnull
@@ -39,7 +42,8 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
         Optional<String> displayName = args.<String>getOne("displayName");
 
         if (!name.isPresent() || !displayName.isPresent()) return CommandResult.empty();
-
+        RachamonGuilds.getInstance().getLogger().info(displayName.get());
+        RachamonGuilds.getInstance().getLogger().info(String.valueOf(displayName.get().matches("[A-Za-z&0-9]*")));
         MainConfig config = RachamonGuilds.getInstance().getConfig();
         LanguageConfig language = RachamonGuilds.getInstance().getLanguage();
 
@@ -58,13 +62,12 @@ public class GuildCreateCommand implements IPlayerCommand, IParameterizedCommand
             throw new GuildCommandException(language.getCommandCategory().getCommandInvalidGuildName());
         }
 
-
         boolean isGuildDisplayNameIncludeColor = config.getGuildCategorySetting().isGuildDisplayNameIncludeColor();
         int minDisplayNameLength = config.getGuildCategorySetting().getMinGuildDisplayNameLength();
         int maxDisplayNameLength = config.getGuildCategorySetting().getMaxGuildDisplayNameLength();
 
-
         RachamonGuildsUtil.guildDisplayNameCheck(displayName.get(), language, isGuildDisplayNameIncludeColor, minDisplayNameLength, maxDisplayNameLength);
+
         if (!displayName.get().matches("[A-Za-z&0-9]*")) {
             throw new GuildCommandException(language.getCommandCategory().getCommandInvalidGuildDisplayName());
         }
