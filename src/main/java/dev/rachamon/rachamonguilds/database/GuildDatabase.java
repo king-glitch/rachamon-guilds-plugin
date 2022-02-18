@@ -15,6 +15,7 @@ import org.spongepowered.api.data.persistence.InvalidDataException;
 import org.spongepowered.api.data.value.immutable.ImmutableValue;
 import org.spongepowered.api.data.value.mutable.Value;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,8 +54,9 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
         registerKeyValue(GuildDatabaseKeys.GUILD, this::getGuildUuidValue);
     }
 
+    @Nonnull
     @Override
-    public Optional<GuildDatabase> fill(DataHolder dataHolder, MergeFunction overlap) {
+    public Optional<GuildDatabase> fill(DataHolder dataHolder, @Nonnull MergeFunction overlap) {
         dataHolder.get(GuildDatabase.class).ifPresent(that -> {
             GuildDatabase data = overlap.merge(this, that);
             this.guildUuid = data.guildUuid;
@@ -62,8 +64,9 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
         return Optional.of(this);
     }
 
+    @Nonnull
     @Override
-    public Optional<GuildDatabase> from(DataContainer container) {
+    public Optional<GuildDatabase> from(@Nonnull DataContainer container) {
         return this.from((DataView) container);
     }
 
@@ -80,11 +83,13 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
         return Optional.of(this);
     }
 
+    @Nonnull
     @Override
     public GuildDatabase copy() {
         return new GuildDatabase(this.guildUuid);
     }
 
+    @Nonnull
     @Override
     public GuildDatabase.Immutable asImmutable() {
         return new Immutable(this.guildUuid);
@@ -95,6 +100,7 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
         return 1;
     }
 
+    @Nonnull
     @Override
     public DataContainer toContainer() {
         return super.toContainer().set(GuildDatabaseKeys.GUILD.getQuery(), this.guildUuid.toString());
@@ -142,7 +148,7 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
      */
     public static class Immutable extends AbstractImmutableData<Immutable, GuildDatabase> {
 
-        private UUID guildUuid;
+        private final UUID guildUuid;
 
         {
             registerGetters();
@@ -170,6 +176,7 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
             registerKeyValue(GuildDatabaseKeys.GUILD, this::getGuildUuid);
         }
 
+        @Nonnull
         @Override
         public GuildDatabase asMutable() {
             return new GuildDatabase(this.guildUuid);
@@ -180,8 +187,10 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
             return 1;
         }
 
+        @Nonnull
         @Override
         public DataContainer toContainer() {
+            assert this.guildUuid != null;
             return super.toContainer().set(GuildDatabaseKeys.GUILD.getQuery(), this.guildUuid);
         }
 
@@ -191,6 +200,7 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
          * @return the guild uuid
          */
         public ImmutableValue<UUID> getGuildUuid() {
+            assert this.guildUuid != null;
             return Sponge
                     .getRegistry()
                     .getValueFactory()
@@ -211,18 +221,21 @@ public class GuildDatabase extends AbstractData<GuildDatabase, GuildDatabase.Imm
             super(GuildDatabase.class, 1);
         }
 
+        @Nonnull
         @Override
         public GuildDatabase create() {
             return new GuildDatabase();
         }
 
+        @Nonnull
         @Override
-        public Optional<GuildDatabase> createFrom(DataHolder dataHolder) {
+        public Optional<GuildDatabase> createFrom(@Nonnull DataHolder dataHolder) {
             return create().fill(dataHolder);
         }
 
+        @Nonnull
         @Override
-        protected Optional<GuildDatabase> buildContent(DataView container) throws InvalidDataException {
+        protected Optional<GuildDatabase> buildContent(@Nonnull DataView container) throws InvalidDataException {
             return create().from((DataContainer) container);
         }
     }
