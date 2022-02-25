@@ -157,7 +157,11 @@ public final class GuildService {
      * @return the guild members
      */
     public Collection<GuildMember> getGuildMembers(Guild guild) {
-        return guild.getMembers().stream().filter(member -> Sponge.getServer().getPlayer(member.getUuid()).isPresent()).collect(Collectors.toSet());
+        return guild
+                .getMembers()
+                .stream()
+                .filter(member -> Sponge.getServer().getPlayer(member.getUuid()).isPresent())
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -202,6 +206,13 @@ public final class GuildService {
     }
 
     /**
+     * Save.
+     */
+    public void save(Guild guild) {
+        GuildDatabaseManager.save(guild);
+    }
+
+    /**
      * Delete boolean.
      *
      * @param uuid the uuid
@@ -233,6 +244,6 @@ public final class GuildService {
         Optional<GuildMember> member = this.getGuildMember(guild, uuid);
         if (!member.isPresent()) return;
         member.get().setLastJoin(lastJoin);
-        this.save();
+        this.save(guild);
     }
 }
