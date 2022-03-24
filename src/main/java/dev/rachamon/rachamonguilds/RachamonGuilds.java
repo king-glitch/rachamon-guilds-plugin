@@ -112,7 +112,7 @@ public class RachamonGuilds implements IRachamonPlugin {
      * @param event the event
      * @throws IOException the io exception
      */
-    @Listener
+    @Listener(order = Order.LAST)
     public void onPostInitialize(GamePostInitializationEvent event) throws IOException {
         getInstance().getLogger().info("On Post Initialize RachamonGuilds");
         getInstance().getPluginManager().postInitialize();
