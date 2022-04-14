@@ -37,7 +37,7 @@ public class GuildPluginManager implements IRachamonPluginManager {
     public void initialize() {
         this.plugin.setComponents(new RachamonGuilds.Components());
         this.plugin.setGuildInjector(this.plugin.getSpongeInjector().createChildInjector(new RachamonGuildsModule()));
-        this.plugin.getGuildInjector().injectMembers(this.plugin.getComponents());
+        this.plugin.getSpongeInjector().injectMembers(this.plugin.getComponents());
         this.plugin.setIsInitialized(true);
     }
 
