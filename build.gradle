@@ -16,7 +16,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.king-glitch:sponge-plugin-api:d186851206'
+    implementation 'com.github.king-glitch:sponge-plugin-api:6371b7e4c7'
     compileOnly 'org.spongepowered:spongeapi:7.4.0'
     compileOnly files('./libs/PlaceholderAPI-4.5.1.jar')
     annotationProcessor 'org.spongepowered:spongeapi:7.4.0'

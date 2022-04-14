@@ -42,11 +42,10 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
     private static RachamonGuilds instance;
     private static boolean isInitialized = false;
 
-    private GuildPluginManager rachamonGuildsPluginManager;
+    private GuildPluginManager pluginManager;
     private Components components;
     private SpongeAPIConfigFactory<RachamonGuilds, MainConfig> config;
     private SpongeAPIConfigFactory<RachamonGuilds, LanguageConfig> language;
-    private LoggerUtil logger;
     private RachamonGuildsHelperUtil helperUtil;
 
     @Inject
@@ -83,9 +82,9 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
      */
     @Listener
     public void onPreInitialize(GamePreInitializationEvent event) {
-        instance = this;
-        this.rachamonGuildsPluginManager = new GuildPluginManager();
+        RachamonGuilds.instance = this;
 
+        this.pluginManager = new GuildPluginManager();
         this.getPluginManager().preInitialize();
         this.getLogger().info("On Pre Initialize RachamonGuilds...");
     }
@@ -97,8 +96,8 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
      */
     @Listener(order = Order.EARLY)
     public void onInitialize(GameInitializationEvent event) {
-        getInstance().getLogger().info("On Initialize RachamonGuilds...");
-        getInstance().getPluginManager().initialize();
+        RachamonGuilds.getInstance().getLogger().info("On Initialize RachamonGuilds...");
+        RachamonGuilds.getInstance().getPluginManager().initialize();
     }
 
     /**
@@ -108,9 +107,9 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
      */
     @Listener
     public void onStart(GameInitializationEvent event) {
-        if (!getInstance().getIsInitialized()) return;
-        getInstance().getLogger().info("On Start RachamonGuilds...");
-        getInstance().getPluginManager().start();
+        if (!this.getIsInitialized()) return;
+        RachamonGuilds.getInstance().getLogger().info("On Start RachamonGuilds...");
+        RachamonGuilds.getInstance().getPluginManager().start();
     }
 
     /**
@@ -121,8 +120,8 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
      */
     @Listener(order = Order.LAST)
     public void onPostInitialize(GamePostInitializationEvent event) throws IOException {
-        getInstance().getLogger().info("On Post Initialize RachamonGuilds");
-        getInstance().getPluginManager().postInitialize();
+        RachamonGuilds.getInstance().getLogger().info("On Post Initialize RachamonGuilds");
+        RachamonGuilds.getInstance().getPluginManager().postInitialize();
     }
 
     /**
@@ -133,8 +132,8 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
      */
     @Listener
     public void onReload(GameReloadEvent event) throws IOException {
-        getInstance().getLogger().info("On Plugin Reload");
-        getInstance().getPluginManager().reload();
+        RachamonGuilds.getInstance().getLogger().info("On Plugin Reload");
+        RachamonGuilds.getInstance().getPluginManager().reload();
     }
 
     /**
@@ -176,24 +175,6 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
     }
 
     /**
-     * Gets logger.
-     *
-     * @return the logger
-     */
-    public LoggerUtil getLogger() {
-        return this.logger;
-    }
-
-    /**
-     * Sets logger.
-     *
-     * @param logger the logger
-     */
-    public void setLogger(LoggerUtil logger) {
-        this.logger = logger;
-    }
-
-    /**
      * Gets is initialized.
      *
      * @return the is initialized
@@ -207,8 +188,9 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
      *
      * @return the plugin manager
      */
+    @Override
     public GuildPluginManager getPluginManager() {
-        return this.rachamonGuildsPluginManager;
+        return this.pluginManager;
     }
 
     @Override
@@ -218,7 +200,7 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
 
     @Override
     public void setInitialized(boolean isInitialized) {
-
+        RachamonGuilds.isInitialized = isInitialized;
     }
 
     @Override
@@ -299,8 +281,8 @@ public class RachamonGuilds extends RachamonSpongePluginProvider implements IRac
      *
      * @param injector the injector
      */
-    public void setGuildInjector(Injector injector) {
-        this.guildInjector = injector;
+    public void setSpongeInjector(Injector injector) {
+        this.spongeInjector = injector;
     }
 
     /**
