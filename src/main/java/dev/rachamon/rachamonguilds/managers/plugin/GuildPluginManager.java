@@ -2,6 +2,7 @@ package dev.rachamon.rachamonguilds.managers.plugin;
 
 import dev.rachamon.api.sponge.config.SpongeAPIConfigFactory;
 import dev.rachamon.api.sponge.exception.AnnotatedCommandException;
+import dev.rachamon.api.sponge.implement.plugin.IRachamonPluginManager;
 import dev.rachamon.api.sponge.util.TextUtil;
 import dev.rachamon.rachamonguilds.RachamonGuilds;
 import dev.rachamon.rachamonguilds.RachamonGuildsModule;
@@ -19,7 +20,6 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.entity.living.player.Player;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The type Guild plugin manager.
  */
-public class GuildPluginManager {
+public class GuildPluginManager implements IRachamonPluginManager {
 
     private final RachamonGuilds plugin = RachamonGuilds.getInstance();
 
@@ -74,9 +74,8 @@ public class GuildPluginManager {
     /**
      * Reload.
      *
-     * @throws IOException the io exception
      */
-    public void reload() throws IOException {
+    public void reload() {
 
         this.plugin.getLogger().debug("Reloading Rachamon Guilds...");
 
@@ -97,8 +96,16 @@ public class GuildPluginManager {
         SpongeAPIConfigFactory<RachamonGuilds, LanguageConfig> language = new SpongeAPIConfigFactory<>(this.plugin, "language.conf");
         this.plugin.setConfigManager(config);
         this.plugin.setLanguageManager(language);
-        this.plugin.setMainConfig(config.setHeader("Main Config").setClazz(new MainConfig()).setClazzType(MainConfig.class).build());
-        this.plugin.setLanguageConfig(language.setHeader("Language Config").setClazz(new LanguageConfig()).setClazzType(LanguageConfig.class).build());
+        this.plugin.setMainConfig(config
+                .setHeader("Main Config")
+                .setClazz(new MainConfig())
+                .setClazzType(MainConfig.class)
+                .build());
+        this.plugin.setLanguageConfig(language
+                .setHeader("Language Config")
+                .setClazz(new LanguageConfig())
+                .setClazzType(LanguageConfig.class)
+                .build());
     }
 
     /**
@@ -108,16 +115,13 @@ public class GuildPluginManager {
      */
     public void sendGuildJoinMotd(Player source) {
         try {
-            Sponge.getScheduler().createTaskBuilder()
-                    .execute(() -> {
-                        Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(source);
-                        if (!guild.isPresent()) return;
-                        if (guild.get().getMotd() == null) return;
-                        if (guild.get().getMotd().isEmpty()) return;
-                        plugin.getGuildMessagingManager().sendGuildInfo(guild.get(), TextUtil.toText(guild.get().getMotd()));
-                    })
-                    .delay(2, TimeUnit.SECONDS)
-                    .submit(plugin);
+            Sponge.getScheduler().createTaskBuilder().execute(() -> {
+                Optional<Guild> guild = RachamonGuilds.getInstance().getGuildManager().getPlayerGuild(source);
+                if (!guild.isPresent()) return;
+                if (guild.get().getMotd() == null) return;
+                if (guild.get().getMotd().isEmpty()) return;
+                plugin.getGuildMessagingManager().sendGuildInfo(guild.get(), TextUtil.toText(guild.get().getMotd()));
+            }).delay(2, TimeUnit.SECONDS).submit(plugin);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -140,10 +144,8 @@ public class GuildPluginManager {
 
     /**
      * Post initialize.
-     *
-     * @throws IOException the io exception
      */
-    public void postInitialize() throws IOException {
+    public void postInitialize() {
 
         this.configureConfigs();
         this.plugin.setHelperUtil(new RachamonGuildsHelperUtil());

@@ -207,6 +207,8 @@ public final class GuildService {
 
     /**
      * Save.
+     *
+     * @param guild the guild
      */
     public void save(Guild guild) {
         GuildDatabaseManager.save(guild);

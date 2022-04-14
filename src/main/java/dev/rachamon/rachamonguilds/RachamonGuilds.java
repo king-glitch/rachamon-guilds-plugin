@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import dev.rachamon.api.sponge.command.SpongeCommandService;
 import dev.rachamon.api.sponge.config.SpongeAPIConfigFactory;
 import dev.rachamon.api.sponge.implement.plugin.IRachamonPlugin;
+import dev.rachamon.api.sponge.provider.RachamonSpongePluginProvider;
 import dev.rachamon.api.sponge.util.LoggerUtil;
 import dev.rachamon.rachamonguilds.api.services.GuildService;
 import dev.rachamon.rachamonguilds.configs.LanguageConfig;
@@ -36,7 +37,7 @@ import java.nio.file.Path;
  * The type Rachamon guilds.
  */
 @Plugin(id = "rachamonguilds", name = "RachamonGuilds", description = "A simple guild plugin", authors = {"Rachamon"}, dependencies = {@Dependency(id = "placeholderapi", optional = true)})
-public class RachamonGuilds implements IRachamonPlugin {
+public class RachamonGuilds extends RachamonSpongePluginProvider implements IRachamonPlugin {
 
     private static RachamonGuilds instance;
     private static boolean isInitialized = false;
@@ -69,6 +70,13 @@ public class RachamonGuilds implements IRachamonPlugin {
     Injector spongeInjector;
 
     /**
+     * Instantiates a new Rachamon guilds.
+     */
+    public RachamonGuilds() {
+        super("RachamonGuilds", Sponge.getServer());
+    }
+
+    /**
      * On pre initialize.
      *
      * @param event the event
@@ -76,7 +84,6 @@ public class RachamonGuilds implements IRachamonPlugin {
     @Listener
     public void onPreInitialize(GamePreInitializationEvent event) {
         instance = this;
-        this.setLogger(new LoggerUtil(Sponge.getServer()));
         this.rachamonGuildsPluginManager = new GuildPluginManager();
 
         this.getPluginManager().preInitialize();
@@ -137,7 +144,7 @@ public class RachamonGuilds implements IRachamonPlugin {
      */
     @Listener
     public void onPlayerJoin(ClientConnectionEvent.Join event) {
-        getInstance().getPluginManager().sendGuildJoinMotd((Player) event.getSource());
+        RachamonGuilds.getInstance().getPluginManager().sendGuildJoinMotd((Player) event.getSource());
     }
 
     /**
@@ -147,7 +154,7 @@ public class RachamonGuilds implements IRachamonPlugin {
      */
     @Listener
     public void onPlayerQuit(ClientConnectionEvent.Disconnect event) {
-        getInstance().getPluginManager().savePlayerLastJoin((Player) event.getSource());
+        RachamonGuilds.getInstance().getPluginManager().savePlayerLastJoin((Player) event.getSource());
     }
 
     /**
@@ -177,7 +184,11 @@ public class RachamonGuilds implements IRachamonPlugin {
         return this.logger;
     }
 
-    @Override
+    /**
+     * Sets logger.
+     *
+     * @param logger the logger
+     */
     public void setLogger(LoggerUtil logger) {
         this.logger = logger;
     }
@@ -198,6 +209,21 @@ public class RachamonGuilds implements IRachamonPlugin {
      */
     public GuildPluginManager getPluginManager() {
         return this.rachamonGuildsPluginManager;
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return false;
+    }
+
+    @Override
+    public void setInitialized(boolean isInitialized) {
+
+    }
+
+    @Override
+    public Injector getPluginInjector() {
+        return null;
     }
 
     /**
@@ -247,11 +273,6 @@ public class RachamonGuilds implements IRachamonPlugin {
 
     @Override
     public Game getGame() {
-        return null;
-    }
-
-    @Override
-    public Injector getBotInjector() {
         return null;
     }
 
